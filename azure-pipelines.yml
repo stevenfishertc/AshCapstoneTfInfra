@@ -55,7 +55,7 @@ stages:
             command: plan
             environmentServiceNameAzureRM: stevens-capstone-conn
             workingDirectory: environments/dev
-            commandOptions: "-var-file=terraform.tfvars -out=tfplan"
+            commandOptions: "-var-file=dev.tfvars -out=tfplan"
 
         - task: TerraformTaskV4@4
           displayName: "Terraform Apply (Dev)"
@@ -114,7 +114,7 @@ stages:
                   command: plan
                   environmentServiceNameAzureRM: stevens-capstone-conn
                   workingDirectory: environments/qa
-                  commandOptions: "-var-file=terraform.tfvars -out=tfplan"
+                  commandOptions: "-var-file=qa.tfvars -out=tfplan"
 
               - task: TerraformTaskV4@4
                 displayName: "Terraform Apply (QA)"
@@ -173,7 +173,7 @@ stages:
                   command: plan
                   environmentServiceNameAzureRM: stevens-capstone-conn
                   workingDirectory: environments/prod
-                  commandOptions: "-var-file=terraform.tfvars -out=tfplan"
+                  commandOptions: "-var-file=prod.tfvars -out=tfplan"
 
               - task: TerraformTaskV4@4
                 displayName: "Terraform Apply (Prod)"
