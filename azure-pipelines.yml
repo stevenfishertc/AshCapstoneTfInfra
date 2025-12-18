@@ -48,10 +48,7 @@ stages:
               export ARM_CLIENT_ID=$servicePrincipalId
               export ARM_CLIENT_SECRET=$servicePrincipalKey
               export ARM_TENANT_ID=$tenantId
-              export ARM_SUBSCRIPTION_ID=$subscriptionId
-
-              echo $subscriptionId
-              echo $tenantId
+              export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
               terraform init
 
@@ -67,7 +64,7 @@ stages:
               export ARM_CLIENT_ID=$servicePrincipalId
               export ARM_CLIENT_SECRET=$servicePrincipalKey
               export ARM_TENANT_ID=$tenantId
-              export ARM_SUBSCRIPTION_ID=$subscriptionId
+              export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
               terraform plan -var-file="terraform.tfvars" -out=tfplan
 
@@ -83,7 +80,7 @@ stages:
               export ARM_CLIENT_ID=$servicePrincipalId
               export ARM_CLIENT_SECRET=$servicePrincipalKey
               export ARM_TENANT_ID=$tenantId
-              export ARM_SUBSCRIPTION_ID=$subscriptionId
+              export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
               terraform apply -auto-approve tfplan
 
@@ -128,7 +125,7 @@ stages:
                     export ARM_CLIENT_ID=$servicePrincipalId
                     export ARM_CLIENT_SECRET=$servicePrincipalKey
                     export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$subscriptionId
+                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
                     terraform init
 
@@ -144,7 +141,7 @@ stages:
                     export ARM_CLIENT_ID=$servicePrincipalId
                     export ARM_CLIENT_SECRET=$servicePrincipalKey
                     export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$subscriptionId
+                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
                     terraform plan -var-file="terraform.tfvars" -out=tfplan
 
@@ -160,7 +157,7 @@ stages:
                     export ARM_CLIENT_ID=$servicePrincipalId
                     export ARM_CLIENT_SECRET=$servicePrincipalKey
                     export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$subscriptionId
+                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
                     
                     terraform apply -auto-approve tfplan
 
@@ -205,7 +202,7 @@ stages:
                     export ARM_CLIENT_ID=$servicePrincipalId
                     export ARM_CLIENT_SECRET=$servicePrincipalKey
                     export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$subscriptionId
+                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
                     terraform init
 
@@ -221,7 +218,7 @@ stages:
                     export ARM_CLIENT_ID=$servicePrincipalId
                     export ARM_CLIENT_SECRET=$servicePrincipalKey
                     export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$subscriptionId
+                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
                     terraform plan -var-file="terraform.tfvars" -out=tfplan
 
@@ -237,7 +234,7 @@ stages:
                     export ARM_CLIENT_ID=$servicePrincipalId
                     export ARM_CLIENT_SECRET=$servicePrincipalKey
                     export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$subscriptionId
+                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
                     
                     terraform apply -auto-approve tfplan
 
