@@ -45,8 +45,14 @@ stages:
             workingDirectory: environments/dev
             addSpnToEnvironment: true
             inlineScript: |
-              echo "Tenant: $ARM_TENANT_ID"
-              echo "Subscription: $ARM_SUBSCRIPTION_ID"
+              export ARM_CLIENT_ID=$servicePrincipalId
+              export ARM_CLIENT_SECRET=$servicePrincipalKey
+              export ARM_TENANT_ID=$tenantId
+              export ARM_SUBSCRIPTION_ID=$subscriptionId
+
+              echo $subscriptionId
+              echo $tenantId
+
               terraform init
 
         - task: AzureCLI@2
@@ -58,6 +64,10 @@ stages:
             workingDirectory: environments/dev
             addSpnToEnvironment: true
             inlineScript: |
+              export ARM_CLIENT_ID=$servicePrincipalId
+              export ARM_CLIENT_SECRET=$servicePrincipalKey
+              export ARM_TENANT_ID=$tenantId
+              export ARM_SUBSCRIPTION_ID=$subscriptionId
 
               terraform plan -var-file="terraform.tfvars" -out=tfplan
 
@@ -70,6 +80,10 @@ stages:
             workingDirectory: environments/dev
             addSpnToEnvironment: true
             inlineScript: |
+              export ARM_CLIENT_ID=$servicePrincipalId
+              export ARM_CLIENT_SECRET=$servicePrincipalKey
+              export ARM_TENANT_ID=$tenantId
+              export ARM_SUBSCRIPTION_ID=$subscriptionId
 
               terraform apply -auto-approve tfplan
 
@@ -111,6 +125,10 @@ stages:
                   workingDirectory: environments/qa
                   addSpnToEnvironment: true
                   inlineScript: |
+                    export ARM_CLIENT_ID=$servicePrincipalId
+                    export ARM_CLIENT_SECRET=$servicePrincipalKey
+                    export ARM_TENANT_ID=$tenantId
+                    export ARM_SUBSCRIPTION_ID=$subscriptionId
 
                     terraform init
 
@@ -123,6 +141,10 @@ stages:
                   workingDirectory: environments/qa
                   addSpnToEnvironment: true
                   inlineScript: |
+                    export ARM_CLIENT_ID=$servicePrincipalId
+                    export ARM_CLIENT_SECRET=$servicePrincipalKey
+                    export ARM_TENANT_ID=$tenantId
+                    export ARM_SUBSCRIPTION_ID=$subscriptionId
 
                     terraform plan -var-file="terraform.tfvars" -out=tfplan
 
@@ -135,6 +157,10 @@ stages:
                   workingDirectory: environments/qa
                   addSpnToEnvironment: true
                   inlineScript: |
+                    export ARM_CLIENT_ID=$servicePrincipalId
+                    export ARM_CLIENT_SECRET=$servicePrincipalKey
+                    export ARM_TENANT_ID=$tenantId
+                    export ARM_SUBSCRIPTION_ID=$subscriptionId
                     
                     terraform apply -auto-approve tfplan
 
@@ -176,6 +202,10 @@ stages:
                   workingDirectory: environments/prod
                   addSpnToEnvironment: true
                   inlineScript: |
+                    export ARM_CLIENT_ID=$servicePrincipalId
+                    export ARM_CLIENT_SECRET=$servicePrincipalKey
+                    export ARM_TENANT_ID=$tenantId
+                    export ARM_SUBSCRIPTION_ID=$subscriptionId
 
                     terraform init
 
@@ -188,6 +218,10 @@ stages:
                   workingDirectory: environments/prod
                   addSpnToEnvironment: true
                   inlineScript: |
+                    export ARM_CLIENT_ID=$servicePrincipalId
+                    export ARM_CLIENT_SECRET=$servicePrincipalKey
+                    export ARM_TENANT_ID=$tenantId
+                    export ARM_SUBSCRIPTION_ID=$subscriptionId
 
                     terraform plan -var-file="terraform.tfvars" -out=tfplan
 
@@ -200,6 +234,10 @@ stages:
                   workingDirectory: environments/prod
                   addSpnToEnvironment: true
                   inlineScript: |
+                    export ARM_CLIENT_ID=$servicePrincipalId
+                    export ARM_CLIENT_SECRET=$servicePrincipalKey
+                    export ARM_TENANT_ID=$tenantId
+                    export ARM_SUBSCRIPTION_ID=$subscriptionId
                     
                     terraform apply -auto-approve tfplan
 
