@@ -36,53 +36,35 @@ stages:
             terraform -version
           displayName: "Install Terraform"
 
-        - task: AzureCLI@2
+        - task: TerraformTaskV4@4
           displayName: "Terraform Init (Dev)"
           inputs:
-            azureSubscription: $(AZURE_SUBSCRIPTION)
-            scriptType: bash
-            scriptLocation: inlineScript
+            provider: azurerm
+            command: init
+            backendServiceArm: stevens-capstone-conn
+            backendAzureRmResourceGroupName: steven-tfstate-rg
+            backendAzureRmStorageAccountName: steventfstateaccount
+            backendAzureRmContainerName: tfstate
+            backendAzureRmKey: dev.terraform.tfstate
             workingDirectory: environments/dev
-            addSpnToEnvironment: true
-            inlineScript: |
-              export ARM_CLIENT_ID=$servicePrincipalId
-              export ARM_CLIENT_SECRET=$servicePrincipalKey
-              export ARM_TENANT_ID=$tenantId
-              export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
-              terraform init
-
-        - task: AzureCLI@2
+        - task: TerraformTaskV4@4
           displayName: "Terraform Plan (Dev)"
           inputs:
-            azureSubscription: $(AZURE_SUBSCRIPTION)
-            scriptType: bash
-            scriptLocation: inlineScript
+            provider: azurerm
+            command: plan
+            environmentServiceNameAzureRM: stevens-capstone-conn
             workingDirectory: environments/dev
-            addSpnToEnvironment: true
-            inlineScript: |
-              export ARM_CLIENT_ID=$servicePrincipalId
-              export ARM_CLIENT_SECRET=$servicePrincipalKey
-              export ARM_TENANT_ID=$tenantId
-              export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+            commandOptions: "-var-file=terraform.tfvars -out=tfplan"
 
-              terraform plan -var-file="terraform.tfvars" -out=tfplan
-
-        - task: AzureCLI@2
+        - task: TerraformTaskV4@4
           displayName: "Terraform Apply (Dev)"
           inputs:
-            azureSubscription: $(AZURE_SUBSCRIPTION)
-            scriptType: bash
-            scriptLocation: inlineScript
+            provider: azurerm
+            command: apply
+            environmentServiceNameAzureRM: stevens-capstone-conn
             workingDirectory: environments/dev
-            addSpnToEnvironment: true
-            inlineScript: |
-              export ARM_CLIENT_ID=$servicePrincipalId
-              export ARM_CLIENT_SECRET=$servicePrincipalKey
-              export ARM_TENANT_ID=$tenantId
-              export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-
-              terraform apply -auto-approve tfplan
+            commandOptions: "-auto-approve tfplan"
 
 # ---------------------------------------------------
 # 2. QA DEPLOYMENT (Manual Approval Before Running)
@@ -113,53 +95,35 @@ stages:
                   terraform -version
                 displayName: "Install Terraform"
 
-              - task: AzureCLI@2
+              - task: TerraformTaskV4@4
                 displayName: "Terraform Init (QA)"
                 inputs:
-                  azureSubscription: $(AZURE_SUBSCRIPTION)
-                  scriptType: bash
-                  scriptLocation: inlineScript
+                  provider: azurerm
+                  command: init
+                  backendServiceArm: stevens-capstone-conn
+                  backendAzureRmResourceGroupName: steven-tfstate-rg
+                  backendAzureRmStorageAccountName: steventfstateaccount
+                  backendAzureRmContainerName: tfstate
+                  backendAzureRmKey: qa.terraform.tfstate
                   workingDirectory: environments/qa
-                  addSpnToEnvironment: true
-                  inlineScript: |
-                    export ARM_CLIENT_ID=$servicePrincipalId
-                    export ARM_CLIENT_SECRET=$servicePrincipalKey
-                    export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
-                    terraform init
-
-              - task: AzureCLI@2
+              - task: TerraformTaskV4@4
                 displayName: "Terraform Plan (QA)"
                 inputs:
-                  azureSubscription: $(AZURE_SUBSCRIPTION)
-                  scriptType: bash
-                  scriptLocation: inlineScript
+                  provider: azurerm
+                  command: plan
+                  environmentServiceNameAzureRM: stevens-capstone-conn
                   workingDirectory: environments/qa
-                  addSpnToEnvironment: true
-                  inlineScript: |
-                    export ARM_CLIENT_ID=$servicePrincipalId
-                    export ARM_CLIENT_SECRET=$servicePrincipalKey
-                    export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                  commandOptions: "-var-file=terraform.tfvars -out=tfplan"
 
-                    terraform plan -var-file="terraform.tfvars" -out=tfplan
-
-              - task: AzureCLI@2
+              - task: TerraformTaskV4@4
                 displayName: "Terraform Apply (QA)"
                 inputs:
-                  azureSubscription: $(AZURE_SUBSCRIPTION)
-                  scriptType: bash
-                  scriptLocation: inlineScript
+                  provider: azurerm
+                  command: apply
+                  environmentServiceNameAzureRM: stevens-capstone-conn
                   workingDirectory: environments/qa
-                  addSpnToEnvironment: true
-                  inlineScript: |
-                    export ARM_CLIENT_ID=$servicePrincipalId
-                    export ARM_CLIENT_SECRET=$servicePrincipalKey
-                    export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-                    
-                    terraform apply -auto-approve tfplan
+                  commandOptions: "-auto-approve tfplan"
 
 # ---------------------------------------------------
 # 2. PROD DEPLOYMENT (Manual Approval Before Running)
@@ -190,53 +154,35 @@ stages:
                   terraform -version
                 displayName: "Install Terraform"
 
-              - task: AzureCLI@2
+              - task: TerraformTaskV4@4
                 displayName: "Terraform Init (Prod)"
                 inputs:
-                  azureSubscription: $(AZURE_SUBSCRIPTION)
-                  scriptType: bash
-                  scriptLocation: inlineScript
+                  provider: azurerm
+                  command: init
+                  backendServiceArm: stevens-capstone-conn
+                  backendAzureRmResourceGroupName: steven-tfstate-rg
+                  backendAzureRmStorageAccountName: steventfstateaccount
+                  backendAzureRmContainerName: tfstate
+                  backendAzureRmKey: prod.terraform.tfstate
                   workingDirectory: environments/prod
-                  addSpnToEnvironment: true
-                  inlineScript: |
-                    export ARM_CLIENT_ID=$servicePrincipalId
-                    export ARM_CLIENT_SECRET=$servicePrincipalKey
-                    export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
-                    terraform init
-
-              - task: AzureCLI@2
+              - task: TerraformTaskV4@4
                 displayName: "Terraform Plan (Prod)"
                 inputs:
-                  azureSubscription: $(AZURE_SUBSCRIPTION)
-                  scriptType: bash
-                  scriptLocation: inlineScript
+                  provider: azurerm
+                  command: plan
+                  environmentServiceNameAzureRM: stevens-capstone-conn
                   workingDirectory: environments/prod
-                  addSpnToEnvironment: true
-                  inlineScript: |
-                    export ARM_CLIENT_ID=$servicePrincipalId
-                    export ARM_CLIENT_SECRET=$servicePrincipalKey
-                    export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                  commandOptions: "-var-file=terraform.tfvars -out=tfplan"
 
-                    terraform plan -var-file="terraform.tfvars" -out=tfplan
-
-              - task: AzureCLI@2
+              - task: TerraformTaskV4@4
                 displayName: "Terraform Apply (Prod)"
                 inputs:
-                  azureSubscription: $(AZURE_SUBSCRIPTION)
-                  scriptType: bash
-                  scriptLocation: inlineScript
+                  provider: azurerm
+                  command: apply
+                  environmentServiceNameAzureRM: stevens-capstone-conn
                   workingDirectory: environments/prod
-                  addSpnToEnvironment: true
-                  inlineScript: |
-                    export ARM_CLIENT_ID=$servicePrincipalId
-                    export ARM_CLIENT_SECRET=$servicePrincipalKey
-                    export ARM_TENANT_ID=$tenantId
-                    export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-                    
-                    terraform apply -auto-approve tfplan
+                  commandOptions: "-auto-approve tfplan"
 
 
 
