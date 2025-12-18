@@ -23,10 +23,8 @@ resource "azurerm_private_endpoint" "acr" {
   }
 }
 
-resource "azurerm_private_endpoint_dns_zone_group" "acr" {
+resource "azurerm_private_dns_zone" "acr" {
   count               = var.enable_private_endpoint ? 1 : 0
+  resource_group_name = var.resource_group_name
   name                = "pdzg-acr"
-  private_endpoint_id = azurerm_private_endpoint.acr[0].id
-
-  private_dns_zone_ids = [var.private_dns_zone_id]
 }
