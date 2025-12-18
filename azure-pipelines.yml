@@ -38,11 +38,6 @@ stages:
 
         - task: AzureCLI@2
           displayName: "Terraform Init (Dev)"
-          env:
-            ARM_CLIENT_ID: $(servicePrincipalId)
-            ARM_CLIENT_SECRET: $(servicePrincipalKey)
-            ARM_SUBSCRIPTION_ID: $(subscriptionId)
-            ARM_TENANT_ID: $(tenantId)
           inputs:
             azureSubscription: $(AZURE_SUBSCRIPTION)
             scriptType: bash
@@ -55,11 +50,6 @@ stages:
 
         - task: AzureCLI@2
           displayName: "Terraform Plan (Dev)"
-          env:
-            ARM_CLIENT_ID: $(servicePrincipalId)
-            ARM_CLIENT_SECRET: $(servicePrincipalKey)
-            ARM_SUBSCRIPTION_ID: $(subscriptionId)
-            ARM_TENANT_ID: $(tenantId)
           inputs:
             azureSubscription: $(AZURE_SUBSCRIPTION)
             scriptType: bash
@@ -72,11 +62,6 @@ stages:
 
         - task: AzureCLI@2
           displayName: "Terraform Apply (Dev)"
-          env:
-            ARM_CLIENT_ID: $(servicePrincipalId)
-            ARM_CLIENT_SECRET: $(servicePrincipalKey)
-            ARM_SUBSCRIPTION_ID: $(subscriptionId)
-            ARM_TENANT_ID: $(tenantId)
           inputs:
             azureSubscription: $(AZURE_SUBSCRIPTION)
             scriptType: bash
@@ -118,11 +103,6 @@ stages:
 
               - task: AzureCLI@2
                 displayName: "Terraform Init (QA)"
-                env:
-                  ARM_CLIENT_ID: $(servicePrincipalId)
-                  ARM_CLIENT_SECRET: $(servicePrincipalKey)
-                  ARM_SUBSCRIPTION_ID: $(subscriptionId)
-                  ARM_TENANT_ID: $(tenantId)
                 inputs:
                   azureSubscription: $(AZURE_SUBSCRIPTION)
                   scriptType: bash
@@ -135,11 +115,6 @@ stages:
 
               - task: AzureCLI@2
                 displayName: "Terraform Plan (QA)"
-                env:
-                  ARM_CLIENT_ID: $(servicePrincipalId)
-                  ARM_CLIENT_SECRET: $(servicePrincipalKey)
-                  ARM_SUBSCRIPTION_ID: $(subscriptionId)
-                  ARM_TENANT_ID: $(tenantId)
                 inputs:
                   azureSubscription: $(AZURE_SUBSCRIPTION)
                   scriptType: bash
@@ -152,11 +127,6 @@ stages:
 
               - task: AzureCLI@2
                 displayName: "Terraform Apply (QA)"
-                env:
-                  ARM_CLIENT_ID: $(servicePrincipalId)
-                  ARM_CLIENT_SECRET: $(servicePrincipalKey)
-                  ARM_SUBSCRIPTION_ID: $(subscriptionId)
-                  ARM_TENANT_ID: $(tenantId)
                 inputs:
                   azureSubscription: $(AZURE_SUBSCRIPTION)
                   scriptType: bash
@@ -198,11 +168,6 @@ stages:
 
               - task: AzureCLI@2
                 displayName: "Terraform Init (Prod)"
-                env:
-                  ARM_CLIENT_ID: $(servicePrincipalId)
-                  ARM_CLIENT_SECRET: $(servicePrincipalKey)
-                  ARM_SUBSCRIPTION_ID: $(subscriptionId)
-                  ARM_TENANT_ID: $(tenantId)
                 inputs:
                   azureSubscription: $(AZURE_SUBSCRIPTION)
                   scriptType: bash
@@ -215,11 +180,6 @@ stages:
 
               - task: AzureCLI@2
                 displayName: "Terraform Plan (Prod)"
-                env:
-                  ARM_CLIENT_ID: $(servicePrincipalId)
-                  ARM_CLIENT_SECRET: $(servicePrincipalKey)
-                  ARM_SUBSCRIPTION_ID: $(subscriptionId)
-                  ARM_TENANT_ID: $(tenantId)
                 inputs:
                   azureSubscription: $(AZURE_SUBSCRIPTION)
                   scriptType: bash
@@ -232,11 +192,6 @@ stages:
 
               - task: AzureCLI@2
                 displayName: "Terraform Apply (Prod)"
-                env:
-                  ARM_CLIENT_ID: $(servicePrincipalId)
-                  ARM_CLIENT_SECRET: $(servicePrincipalKey)
-                  ARM_SUBSCRIPTION_ID: $(subscriptionId)
-                  ARM_TENANT_ID: $(tenantId)
                 inputs:
                   azureSubscription: $(AZURE_SUBSCRIPTION)
                   scriptType: bash
