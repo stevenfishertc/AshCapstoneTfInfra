@@ -15,7 +15,7 @@ subnet_pe_cidr   = "10.10.2.0/24"
 subnet_apim_cidr = "10.10.3.0/24"
 subnet_pg_cidr   = "10.10.4.0/24"
 
-acr_sku = "Standard"
+acr_sku = "Premium"
 acr_private_endpoint_enabled = true
 
 pg_admin_user     = "stevushka"
