@@ -66,7 +66,7 @@ module "postgres" {
   administrator_password = var.pg_admin_password
   db_name                = var.pg_db_name
   sku_name               = var.pg_sku_name
-  version                = var.pg_version
+  pg_version             = var.pg_version
   storage_mb             = var.pg_storage_mb
 
   # Private access mode (delegated subnet)

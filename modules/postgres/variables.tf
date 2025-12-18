@@ -10,7 +10,7 @@ variable "administrator_password" {
 variable "db_name"                { type = string }
 
 variable "sku_name"    { type = string }
-variable "version"     { type = string }
+variable "pg_version"     { type = string }
 variable "storage_mb"  { type = number }
 
 variable "delegated_subnet_id" { type = string }
