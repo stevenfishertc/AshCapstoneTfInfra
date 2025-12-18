@@ -45,7 +45,8 @@ stages:
             workingDirectory: environments/dev
             addSpnToEnvironment: true
             inlineScript: |
-
+              echo "Tenant: $ARM_TENANT_ID"
+              echo "Subscription: $ARM_SUBSCRIPTION_ID"
               terraform init
 
         - task: AzureCLI@2
