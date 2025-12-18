@@ -35,6 +35,50 @@ resource "azurerm_subnet" "apim" {
   address_prefixes     = [var.subnet_apim_cidr]
 }
 
+# Security groups and rules for APIM
+resource "azurerm_network_security_group" "apim" {
+  name                = "nsg-apim"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+  tags                = var.tags
+}
+
+# Allow all inbound (capstone-safe; can be tightened later)
+resource "azurerm_network_security_rule" "apim_inbound" {
+  name                        = "Allow-All-Inbound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.rg.name
+  network_security_group_name = azurerm_network_security_group.apim.name
+}
+
+# Allow all outbound
+resource "azurerm_network_security_rule" "apim_outbound" {
+  name                        = "Allow-All-Outbound"
+  priority                    = 100
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.rg.name
+  network_security_group_name = azurerm_network_security_group.apim.name
+}
+
+# Associate NSG to APIM subnet
+resource "azurerm_subnet_network_security_group_association" "apim" {
+  subnet_id                 = azurerm_subnet.apim.id
+  network_security_group_id = azurerm_network_security_group.apim.id
+}
+
 # Delegated subnet for PostgreSQL Flexible Server private access
 resource "azurerm_subnet" "postgres_delegated" {
   name                 = "snet-postgres"

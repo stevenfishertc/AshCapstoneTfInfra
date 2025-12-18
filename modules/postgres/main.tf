@@ -15,7 +15,6 @@ resource "azurerm_postgresql_flexible_server" "pg" {
   private_dns_zone_id = var.private_dns_zone_id
 
   public_network_access_enabled = false
-
   tags = var.tags
 }
 

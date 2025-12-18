@@ -2,7 +2,7 @@ project  = "capstone"
 env      = "qa"
 location = "eastus2"
 
-tenant_id      = "00000000-0000-0000-0000-000000000000"
+# tenant_id      = "00000000-0000-0000-0000-000000000000"
 unique_suffix  = "a1b2c"
 
 tags = {
@@ -25,7 +25,7 @@ pg_sku_name       = "GP_Standard_D2s_v3"
 pg_version        = "16"
 pg_storage_mb     = 32768
 
-aks_version      = "1.30.7"
+aks_version      = "1.29.4"
 aks_node_vm_size = "Standard_D4s_v5"
 aks_node_count   = 2
 
