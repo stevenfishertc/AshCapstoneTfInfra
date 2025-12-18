@@ -32,7 +32,7 @@ resource "azurerm_private_endpoint" "kv" {
   }
 }
 
-resource "azurerm_private_dns_zone_group" "kv" {
+resource "azurerm_private_endpoint_dns_zone_group" "kv" {
   count               = var.enable_private_endpoint ? 1 : 0
   name                = "pdzg-kv"
   private_endpoint_id = azurerm_private_endpoint.kv[0].id
