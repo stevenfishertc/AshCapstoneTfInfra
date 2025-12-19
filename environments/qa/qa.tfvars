@@ -1,6 +1,6 @@
 project  = "capstone"
 env      = "qa"
-location = "eastus1"
+location = "eastus"
 
 # tenant_id_      = "104e77d4-81e7-4c16-ab44-935220bed6dd"
 unique_suffix  = "a1b2c"
