@@ -26,7 +26,7 @@ pg_version        = "16"
 pg_storage_mb     = 32768
 
 aks_version      = "1.29.4"
-aks_node_vm_size = "Standard_D4s_v5"
+aks_node_vm_size = "Standard_B2s"
 aks_node_count   = 1
 
 apim_publisher_name  = "Capstone Team"
