@@ -103,8 +103,8 @@ resource "azurerm_private_dns_zone" "kv" {
 }
 
 resource "azurerm_private_dns_zone" "acr" {
-  resource_group_name = var.resource_group_name
   name                = var.private_dns_zones.acr
+  resource_group_name = azurerm_resource_group.rg.name
   tags                = var.tags
 
   depends_on = [
