@@ -49,7 +49,7 @@ stages:
 
         - task: TerraformTaskV4@4
           displayName: "Terraform Init (Dev)"
-          variables:
+          env:
             TF_VAR_tenant_id: $(tenantId)
           inputs:
             provider: azurerm
