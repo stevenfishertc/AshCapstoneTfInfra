@@ -32,3 +32,5 @@ aks_node_count   = 2
 apim_publisher_name  = "Capstone Team"
 apim_publisher_email = "capstone@example.com"
 apim_sku_name        = "Developer_1"
+
+enable_rbac_assignments = false

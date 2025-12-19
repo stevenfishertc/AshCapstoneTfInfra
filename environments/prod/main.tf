@@ -90,6 +90,8 @@ module "aks" {
   acr_id                 = module.acr.id
   keyvault_id            = module.keyvault.id
 
+  enable_rbac_assignments = var.enable_rbac_assignments
+
   node_vm_size           = var.aks_node_vm_size
   node_count             = var.aks_node_count
 

@@ -8,6 +8,12 @@ variable "tenant_id" {
   default = "12345"
 }
 
+variable "enable_rbac_assignments" {
+  type        = bool
+  description = "Whether Terraform should create Azure RBAC role assignments"
+  default     = false
+}
+
 variable "unique_suffix" {
   type        = string
   description = "Short suffix to make globally-unique names (e.g. 4-6 chars)."

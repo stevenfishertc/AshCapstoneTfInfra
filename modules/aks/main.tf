@@ -13,8 +13,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = var.resource_group_name
   dns_prefix          = var.name
 
-  kubernetes_version = var.kubernetes_version
-
   private_cluster_enabled = var.private_cluster_enabled
 
   identity {
@@ -47,6 +45,8 @@ resource "azurerm_role_assignment" "aks_acr_pull" {
 
 # Grant AKS identity rights to read secrets from Key Vault (for CSI driver usage)
 resource "azurerm_role_assignment" "aks_kv_secrets_user" {
+  count = var.enable_rbac_assignments ? 1 : 0
+  
   scope                = var.keyvault_id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = azurerm_user_assigned_identity.aks_uai.principal_id
