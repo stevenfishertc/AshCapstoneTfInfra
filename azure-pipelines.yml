@@ -36,9 +36,20 @@ stages:
             terraform -version
           displayName: "Install Terraform"
 
+        - task: AzureCLI@2
+          displayName: "Get tenant ID for Terraform variables"
+          inputs:
+            azureSubscription: $(AZURE_SUBSCRIPTION)
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              tenantId=$(az account show --query tenantId -o tsv)
+              echo "Tenant from az: $tenantId"
+
+
         - task: TerraformTaskV4@4
           displayName: "Terraform Init (Dev)"
-          env:
+          variables:
             TF_VAR_tenant_id: $(tenantId)
           inputs:
             provider: azurerm
@@ -100,6 +111,16 @@ stages:
                   sudo mv terraform /usr/local/bin/
                   terraform -version
                 displayName: "Install Terraform"
+
+              - task: AzureCLI@2
+                displayName: "Get tenant ID for Terraform variables"
+                inputs:
+                  azureSubscription: $(AZURE_SUBSCRIPTION)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    tenantId=$(az account show --query tenantId -o tsv)
+                    echo "Tenant from az: $tenantId"
 
               - task: TerraformTaskV4@4
                 displayName: "Terraform Init (QA)"
@@ -165,6 +186,16 @@ stages:
                   sudo mv terraform /usr/local/bin/
                   terraform -version
                 displayName: "Install Terraform"
+
+              - task: AzureCLI@2
+                displayName: "Get tenant ID for Terraform variables"
+                inputs:
+                  azureSubscription: $(AZURE_SUBSCRIPTION)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    tenantId=$(az account show --query tenantId -o tsv)
+                    echo "Tenant from az: $tenantId"
 
               - task: TerraformTaskV4@4
                 displayName: "Terraform Init (Prod)"
