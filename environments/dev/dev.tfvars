@@ -2,7 +2,7 @@ project  = "capstone"
 env      = "dev"
 location = "eastus2"
 
-# tenant_id_      = "00000000-0000-0000-0000-000000000000"
+# tenant_id_      = "104e77d4-81e7-4c16-ab44-935220bed6dd"
 unique_suffix  = "a1b2c"
 
 tags = {

@@ -10,6 +10,7 @@ pr:
 
 variables:
   AZURE_SUBSCRIPTION: 'stevens-capstone-conn'   # Service connection name
+  TENANT_ID: ''                                # To be set in pipeline
 
 stages:
 # ---------------------------------------------------
@@ -43,14 +44,14 @@ stages:
             scriptType: bash
             scriptLocation: inlineScript
             inlineScript: |
-              tenantId=$(az account show --query tenantId -o tsv)
-              echo "Tenant from az: $tenantId"
+              TENANT_ID=$(az account show --query tenantId -o tsv)
+              echo "Tenant from az: $TENANT_ID"
 
 
         - task: TerraformTaskV4@4
           displayName: "Terraform Init (Dev)"
           env:
-            TF_VAR_tenant_id: $(tenantId)
+            TF_VAR_tenant_id: $(TENANT_ID)
           inputs:
             provider: azurerm
             command: init
@@ -64,7 +65,7 @@ stages:
         - task: TerraformTaskV4@4
           displayName: "Terraform Plan (Dev)"
           env:
-            TF_VAR_tenant_id: $(tenantId)
+            TF_VAR_tenant_id: $(TENANT_ID)
           inputs:
             provider: azurerm
             command: plan
@@ -75,7 +76,7 @@ stages:
         - task: TerraformTaskV4@4
           displayName: "Terraform Apply (Dev)"
           env:
-            TF_VAR_tenant_id: $(tenantId)
+            TF_VAR_tenant_id: $(TENANT_ID)
           inputs:
             provider: azurerm
             command: apply
@@ -119,13 +120,13 @@ stages:
                   scriptType: bash
                   scriptLocation: inlineScript
                   inlineScript: |
-                    tenantId=$(az account show --query tenantId -o tsv)
-                    echo "Tenant from az: $tenantId"
+                    TENANT_ID=$(az account show --query tenantId -o tsv)
+                    echo "Tenant from az: $TENANT_ID"
 
               - task: TerraformTaskV4@4
                 displayName: "Terraform Init (QA)"
                 env:
-                  TF_VAR_tenant_id: $(tenantId)
+                  TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
                   provider: azurerm
                   command: init
@@ -139,7 +140,7 @@ stages:
               - task: TerraformTaskV4@4
                 displayName: "Terraform Plan (QA)"
                 env:
-                  TF_VAR_tenant_id: $(tenantId)
+                  TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
                   provider: azurerm
                   command: plan
@@ -150,7 +151,7 @@ stages:
               - task: TerraformTaskV4@4
                 displayName: "Terraform Apply (QA)"
                 env:
-                  TF_VAR_tenant_id: $(tenantId)
+                  TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
                   provider: azurerm
                   command: apply
@@ -194,13 +195,13 @@ stages:
                   scriptType: bash
                   scriptLocation: inlineScript
                   inlineScript: |
-                    tenantId=$(az account show --query tenantId -o tsv)
-                    echo "Tenant from az: $tenantId"
+                    TENANT_ID=$(az account show --query tenantId -o tsv)
+                    echo "Tenant from az: $TENANT_ID"
 
               - task: TerraformTaskV4@4
                 displayName: "Terraform Init (Prod)"
                 env:
-                  TF_VAR_tenant_id: $(tenantId)
+                  TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
                   provider: azurerm
                   command: init
@@ -214,7 +215,7 @@ stages:
               - task: TerraformTaskV4@4
                 displayName: "Terraform Plan (Prod)"
                 env:
-                  TF_VAR_tenant_id: $(tenantId)
+                  TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
                   provider: azurerm
                   command: plan
@@ -225,7 +226,7 @@ stages:
               - task: TerraformTaskV4@4
                 displayName: "Terraform Apply (Prod)"
                 env:
-                  TF_VAR_tenant_id: $(tenantId)
+                  TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
                   provider: azurerm
                   command: apply
