@@ -2,7 +2,11 @@ variable "project" { type = string }
 variable "env"     { type = string }
 variable "location" { type = string }
 
-variable "tenant_id" { type = string }
+variable "tenant_id" { 
+  type = string
+  description = "The Tenant ID for the Azure Subscription."
+  default = "12345"
+}
 
 variable "unique_suffix" {
   type        = string
