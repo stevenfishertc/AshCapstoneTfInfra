@@ -22,8 +22,3 @@ resource "azurerm_private_endpoint" "acr" {
   }
 }
 
-resource "azurerm_private_dns_zone" "acr" {
-  resource_group_name = var.resource_group_name
-  name                = "privatelink.azurecr.io"
-  tags                = var.tags
-}

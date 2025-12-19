@@ -1,6 +1,6 @@
 project  = "capstone"
 env      = "qa"
-location = "eastus"
+location = "eastus2"
 
 # tenant_id_      = "104e77d4-81e7-4c16-ab44-935220bed6dd"
 unique_suffix  = "a1b2c"
@@ -27,7 +27,7 @@ pg_storage_mb     = 32768
 
 aks_version      = "1.29.4"
 aks_node_vm_size = "Standard_D4s_v5"
-aks_node_count   = 2
+aks_node_count   = 1
 
 apim_publisher_name  = "Capstone Team"
 apim_publisher_email = "capstone@example.com"

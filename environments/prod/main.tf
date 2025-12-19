@@ -22,6 +22,7 @@ module "base" {
     keyvault = "privatelink.vaultcore.azure.net"
     acr      = "privatelink.azurecr.io"
     apim     = "privatelink.azure-api.net"
+    postgres = "privatelink.postgres.database.azure.com"
   }
 
   tags = local.tags

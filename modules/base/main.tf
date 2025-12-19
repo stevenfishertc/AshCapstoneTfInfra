@@ -103,22 +103,34 @@ resource "azurerm_private_dns_zone" "kv" {
 }
 
 resource "azurerm_private_dns_zone" "acr" {
+  resource_group_name = var.resource_group_name
   name                = var.private_dns_zones.acr
-  resource_group_name = azurerm_resource_group.rg.name
   tags                = var.tags
+
+  depends_on = [
+    azurerm_private_dns_zone.kv
+  ]
 }
 
 resource "azurerm_private_dns_zone" "apim" {
   name                = var.private_dns_zones.apim
   resource_group_name = azurerm_resource_group.rg.name
   tags                = var.tags
+
+  depends_on = [
+    azurerm_private_dns_zone.acr
+  ]
 }
 
 # Postgres Flexible Server private DNS zone
 resource "azurerm_private_dns_zone" "postgres" {
-  name                = "private.postgres.database.azure.com"
+  name                = var.private_dns_zones.postgres
   resource_group_name = azurerm_resource_group.rg.name
   tags                = var.tags
+
+  depends_on = [
+    azurerm_private_dns_zone.apim
+  ]
 }
 
 # Link zones to VNet
