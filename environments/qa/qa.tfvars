@@ -1,6 +1,6 @@
 project  = "capstone"
 env      = "qa"
-location = "eastus2"
+location = "eastus1"
 
 # tenant_id_      = "104e77d4-81e7-4c16-ab44-935220bed6dd"
 unique_suffix  = "a1b2c"
@@ -34,3 +34,4 @@ apim_publisher_email = "capstone@example.com"
 apim_sku_name        = "Developer_1"
 
 enable_rbac_assignments = false
+enable_keyvault_secrets = false

@@ -14,6 +14,12 @@ variable "enable_rbac_assignments" {
   default     = false
 }
 
+variable "enable_keyvault_secrets" {
+  type        = bool
+  description = "Whether Terraform should create Key Vault secrets"
+  default     = false
+}
+
 variable "unique_suffix" {
   type        = string
   description = "Short suffix to make globally-unique names (e.g. 4-6 chars)."

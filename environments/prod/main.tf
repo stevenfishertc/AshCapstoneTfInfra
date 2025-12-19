@@ -117,9 +117,14 @@ module "apim" {
 
 # Store connection strings in Key Vault (env-specific)
 resource "azurerm_key_vault_secret" "pg_conn_string" {
+  count = var.enable_keyvault_secrets ? 1 : 0
+
   name         = "postgres-conn-string"
   value        = module.postgres.connection_string
   key_vault_id = module.keyvault.id
   depends_on   = [module.keyvault, module.postgres]
 }
 
+locals {
+  postgres_conn_string = var.enable_keyvault_secrets ? azurerm_key_vault_secret.pg_conn_string[0].value : null
+}
