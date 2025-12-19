@@ -13,6 +13,7 @@ variable "private_dns_zones" {
     keyvault = string
     acr      = string
     apim     = string
+    postgres = string
   })
 }
 
