@@ -32,12 +32,5 @@ resource "azurerm_private_endpoint" "kv" {
   }
 }
 
-resource "azurerm_private_dns_zone" "kv" {
-  count               = var.enable_private_endpoint ? 1 : 0
-  resource_group_name = var.resource_group_name
-  name                = "privatelink.vaultcore.azure.net"
-  tags                = var.tags
-}
-
 output "id"   { value = azurerm_key_vault.kv.id }
 output "name" { value = azurerm_key_vault.kv.name }
