@@ -38,6 +38,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
 # Allow AKS to pull from ACR
 resource "azurerm_role_assignment" "aks_acr_pull" {
+  count = var.enable_rbac_assignments ? 1 : 0
+  
   scope                = var.acr_id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
