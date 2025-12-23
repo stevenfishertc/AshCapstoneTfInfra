@@ -4,7 +4,7 @@ resource "azurerm_service_plan" "plan" {
   resource_group_name = var.resource_group_name
 
   os_type  = "Linux"
-  sku_name = "B1" # Change to S1/P1v2 if needed
+  sku_name = "D1"
 
   tags = var.tags
 }
