@@ -102,7 +102,7 @@ module "aks" {
 module "webapp" {
   source = "../../modules/webapp"
 
-  name                = "webapp-frontend-prod"
+  name                = "stevens-webapp-frontend-prod"
   location            = var.location
   resource_group_name = module.base.resource_group_name
 
