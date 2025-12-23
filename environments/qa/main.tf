@@ -34,7 +34,7 @@ module "acr" {
   location            = var.location
   resource_group_name = module.base.resource_group_name
   sku                 = var.acr_sku
-  admin_enabled       = false
+  admin_enabled       = true
 
   enable_private_endpoint = var.acr_private_endpoint_enabled
   pe_subnet_id            = module.base.subnet_private_endpoints_id
@@ -98,6 +98,21 @@ module "aks" {
 
   tags = local.tags
 }
+
+module "webapp" {
+  source = "../../modules/webapp"
+
+  name                = "webapp-frontend-qa"
+  location            = var.location
+  resource_group_name = module.base.resource_group_name
+
+  app_service_plan_name = "steven-app-service-plan-qa"
+
+  container_registry_url = "https://apim-capstone-qa-a1b2c.azure-api.net"
+
+  tags = var.tags
+}
+
 
 module "apim" {
   source              = "../../modules/apim"
