@@ -16,6 +16,12 @@ resource "azurerm_postgresql_flexible_server" "pg" {
 
   public_network_access_enabled = false
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      zone
+    ]
+  }
 }
 
 resource "azurerm_postgresql_flexible_server_database" "db" {
