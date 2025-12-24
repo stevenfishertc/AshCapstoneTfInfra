@@ -85,7 +85,7 @@ module "aks" {
   kubernetes_version  = var.aks_version
 
   subnet_id              = module.base.subnet_aks_id
-  private_cluster_enabled = true
+  private_cluster_enabled = false
 
   # Integrations
   acr_id                 = module.acr.id
