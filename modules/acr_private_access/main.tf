@@ -1,27 +1,6 @@
-data "azurerm_kubernetes_cluster" "aks" {
-  name                = var.aks_name
-  resource_group_name = var.resource_group_name
-}
-
-data "azurerm_virtual_network" "vnet" {
-  name                = var.vnet_name
-  resource_group_name = var.resource_group_name
-}
-
-data "azurerm_subnet" "pe_subnet" {
-  name                 = var.pe_subnet_name
-  virtual_network_name = data.azurerm_virtual_network.vnet.name
-  resource_group_name  = var.resource_group_name
-}
-
-data "azurerm_container_registry" "acr" {
-  name                = var.acr_name
-  resource_group_name = var.resource_group_name
-}
-
 locals {
-  kubelet_object_id = data.azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
-  acr_region        = data.azurerm_container_registry.acr.location
+  kubelet_object_id = var.kubelet_object_id
+  acr_region        = var.location
 }
 
 # ---------- Private DNS Zones ----------
@@ -40,7 +19,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "acr_link" {
   name                  = "link-aks-acr"
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.acr.name
-  virtual_network_id    = data.azurerm_virtual_network.vnet.id
+  virtual_network_id    = var.vnet_id
   registration_enabled  = false
 }
 
@@ -48,7 +27,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "acr_data_link" {
   name                  = "link-aks-acr-data"
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.acr_data.name
-  virtual_network_id    = data.azurerm_virtual_network.vnet.id
+  virtual_network_id    = var.vnet_id
   registration_enabled  = false
 }
 
@@ -78,7 +57,7 @@ resource "azurerm_private_endpoint" "acr" {
 
 # ---------- AcrPull for AKS ----------
 resource "azurerm_role_assignment" "acr_pull" {
-  scope                = data.azurerm_container_registry.acr.id
+  scope                = var.acr_id
   role_definition_name = "AcrPull"
   principal_id         = local.kubelet_object_id
 }
