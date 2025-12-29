@@ -72,7 +72,7 @@ resource "azurerm_private_endpoint" "acr" {
 }
 
 # ---------- DNS Zone Group (THE KEY FIX) ----------
-resource "azurerm_private_dns_zone_group" "acr" {
+resource "azurerm_private_endpoint_dns_zone_group" "acr" {
   name                = "acr-zonegroup"
   private_endpoint_id = azurerm_private_endpoint.acr.id
 

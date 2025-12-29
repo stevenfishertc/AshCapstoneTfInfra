@@ -104,7 +104,7 @@ module "acr_private_access" {
   resource_group_name = module.base.resource_group_name
 
   aks_name        = module.aks.name
-  vnet_name       = module.base.vnet_name
+  vnet_name       = module.base.vnet_id
   pe_subnet_name  = module.base.subnet_private_endpoints_id
   acr_name        = module.acr.name
 }
