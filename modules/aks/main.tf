@@ -53,6 +53,3 @@ resource "azurerm_role_assignment" "aks_kv_secrets_user" {
   role_definition_name = "Key Vault Secrets User"
   principal_id         = azurerm_user_assigned_identity.aks_uai.principal_id
 }
-
-output "id"   { value = azurerm_kubernetes_cluster.aks.id }
-output "name" { value = azurerm_kubernetes_cluster.aks.name }
