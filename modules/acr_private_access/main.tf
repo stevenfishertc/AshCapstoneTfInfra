@@ -69,21 +69,14 @@ resource "azurerm_private_endpoint" "acr" {
     subresource_names              = ["registry"]
     is_manual_connection           = false
   }
-}
 
-# ---------- DNS Zone Group (THE KEY FIX) ----------
-resource "azurerm_private_endpoint_dns_zone_group" "acr" {
-  name                = "acr-zonegroup"
-  private_endpoint_id = azurerm_private_endpoint.acr.id
+  private_dns_zone_group {
+    name = "acr-zonegroup"
 
-  private_dns_zone_configs {
-    name                = "acr"
-    private_dns_zone_id = azurerm_private_dns_zone.acr.id
-  }
-
-  private_dns_zone_configs {
-    name                = "acr-data"
-    private_dns_zone_id = azurerm_private_dns_zone.acr_data.id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.acr.id,
+      azurerm_private_dns_zone.acr_data.id
+    ]
   }
 }
 
