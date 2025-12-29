@@ -1,8 +1,8 @@
 data "azurerm_client_config" "current" {}
 
-resource "azurerm_resource_provider_registration" "aks" {
-  name = "Microsoft.ContainerService"
-}
+# resource "azurerm_resource_provider_registration" "aks" {
+#   name = "Microsoft.ContainerService"
+# }
 
 resource "azurerm_user_assigned_identity" "aks_uai" {
   name                = "${var.name}-uai"
@@ -12,9 +12,9 @@ resource "azurerm_user_assigned_identity" "aks_uai" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  depends_on = [
-    azurerm_resource_provider_registration.aks
-  ]
+  # depends_on = [
+  #   azurerm_resource_provider_registration.aks
+  # ]
 
   name                = var.name
   location            = var.location
