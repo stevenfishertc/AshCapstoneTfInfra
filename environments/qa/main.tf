@@ -99,6 +99,17 @@ module "aks" {
   tags = local.tags
 }
 
+module "acr_private_access" {
+  source = "../../modules/acr_private_access"
+
+  resource_group_name = module.base.resource_group_name
+
+  aks_name        = module.aks.name
+  vnet_name       = module.base.vnet_name
+  pe_subnet_name  = module.base.subnet_private_endpoints_id
+  acr_name        = module.acr.name
+}
+
 module "webapp" {
   source = "../../modules/webapp"
 
