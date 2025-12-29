@@ -1,4 +1,17 @@
+resource "azurerm_resource_provider_registration" "acr" {
+  name = "Microsoft.ContainerRegistry"
+}
+
+resource "azurerm_resource_provider_registration" "network" {
+  name = "Microsoft.Network"
+}
+
 resource "azurerm_container_registry" "acr" {
+  depends_on = [
+    azurerm_resource_provider_registration.network,
+    azurerm_resource_provider_registration.acr
+  ]
+
   name                = var.name
   resource_group_name = var.resource_group_name
   location            = var.location

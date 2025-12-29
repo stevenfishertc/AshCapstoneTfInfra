@@ -16,23 +16,3 @@ terraform {
     }
   }
 }
-
-resource "azurerm_resource_provider_registration" "aks" {
-  name = "Microsoft.ContainerService"
-}
-
-resource "azurerm_resource_provider_registration" "network" {
-  name = "Microsoft.Network"
-}
-
-resource "azurerm_resource_provider_registration" "apim" {
-  name = "Microsoft.ApiManagement"
-}
-
-resource "azurerm_resource_provider_registration" "acr" {
-  name = "Microsoft.ContainerRegistry"
-}
-
-resource "azurerm_resource_provider_registration" "kv" {
-  name = "Microsoft.KeyVault"
-}

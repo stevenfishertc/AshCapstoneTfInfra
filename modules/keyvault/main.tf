@@ -1,5 +1,9 @@
 data "azurerm_client_config" "current" {}
 
+resource "azurerm_resource_provider_registration" "kv" {
+  name = "Microsoft.KeyVault"
+}
+
 resource "azurerm_key_vault" "kv" {
   name                = var.name
   location            = var.location

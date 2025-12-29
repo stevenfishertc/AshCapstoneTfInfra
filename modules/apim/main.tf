@@ -1,3 +1,7 @@
+resource "azurerm_resource_provider_registration" "apim" {
+  name = "Microsoft.ApiManagement"
+}
+
 resource "azurerm_api_management" "apim" {
   depends_on = [
     azurerm_resource_provider_registration.apim
