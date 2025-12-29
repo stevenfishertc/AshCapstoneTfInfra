@@ -22,15 +22,18 @@ resource "azurerm_linux_web_app" "webapp" {
   }
 
   site_config {
-    always_on        = true
-    linux_fx_version = "DOCKER|${var.container_image}"
+    always_on = true
   }
 
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
     WEBSITES_PORT                       = "80"
-    DOCKER_REGISTRY_SERVER_URL          = var.container_registry_url
+
+    # Container configuration (authoritative)
+    DOCKER_CUSTOM_IMAGE_NAME   = var.container_image
+    DOCKER_REGISTRY_SERVER_URL = var.container_registry_url
   }
 
   tags = var.tags
 }
+
