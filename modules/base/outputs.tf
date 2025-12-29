@@ -1,5 +1,6 @@
 output "resource_group_name" { value = azurerm_resource_group.rg.name }
 output "vnet_id"             { value = azurerm_virtual_network.vnet.id }
+output "location"            { value = azurerm_resource_group.rg.location }
 
 output "subnet_aks_id" { value = azurerm_subnet.aks.id }
 output "subnet_private_endpoints_id" { value = azurerm_subnet.private_endpoints.id }
