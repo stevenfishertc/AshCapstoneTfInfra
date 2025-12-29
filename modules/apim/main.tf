@@ -1,4 +1,8 @@
 resource "azurerm_api_management" "apim" {
+  depends_on = [
+    azurerm_resource_provider_registration.apim
+  ]
+
   name                = var.name
   location            = var.location
   resource_group_name = var.resource_group_name
