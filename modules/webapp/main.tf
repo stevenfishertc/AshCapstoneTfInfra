@@ -17,19 +17,19 @@ resource "azurerm_linux_web_app" "webapp" {
 
   https_only = true
 
-  site_config {
-    always_on = true
+  identity {
+    type = "SystemAssigned"
+  }
 
-    application_stack {
-      docker_image_name   = var.container_image
-    }
+  site_config {
+    always_on        = true
+    linux_fx_version = "DOCKER|${var.container_image}"
   }
 
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
     WEBSITES_PORT                       = "80"
-
-    DOCKER_REGISTRY_SERVER_URL = var.container_registry_url
+    DOCKER_REGISTRY_SERVER_URL          = var.container_registry_url
   }
 
   tags = var.tags
