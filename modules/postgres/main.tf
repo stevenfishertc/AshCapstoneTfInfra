@@ -3,6 +3,8 @@ resource "azurerm_postgresql_flexible_server" "pg" {
   resource_group_name = var.resource_group_name
   location            = var.location
 
+  version = var.pg_version
+
   sku_name = var.sku_name
   storage_mb = var.storage_mb
 
@@ -17,7 +19,8 @@ resource "azurerm_postgresql_flexible_server" "pg" {
 
   lifecycle {
     ignore_changes = [
-      zone
+      zone,
+      version
     ]
   }
 }

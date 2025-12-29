@@ -32,5 +32,23 @@ resource "azurerm_private_endpoint" "kv" {
   }
 }
 
+resource "azurerm_key_vault_access_policy" "terraform" {
+  key_vault_id = azurerm_key_vault.kv.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  key_permissions = [
+    "Get", "List", "Create", "Delete"
+  ]
+
+  secret_permissions = [
+    "Get", "List", "Set", "Delete"
+  ]
+
+  certificate_permissions = [
+    "Get", "List"
+  ]
+}
+
 output "id"   { value = azurerm_key_vault.kv.id }
 output "name" { value = azurerm_key_vault.kv.name }
