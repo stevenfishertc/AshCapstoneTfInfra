@@ -22,7 +22,7 @@ pg_admin_user     = "stevushka"
 pg_admin_password = "4285Vion"
 pg_db_name        = "appdb"
 pg_sku_name       = "GP_Standard_D2s_v3"
-pg_version        = "16"
+pg_version        = "14"
 pg_storage_mb     = 32768
 
 aks_version      = "1.29.4"
