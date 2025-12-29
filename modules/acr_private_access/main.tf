@@ -32,8 +32,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "acr_data_link" {
 }
 
 # ---------- Private Endpoint ----------
+resource "random_string" "pe_suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 resource "azurerm_private_endpoint" "acr" {
-  name                = "pe-${var.acr_name}"
+  name                = "pe-${var.acr_name}-${random_string.pe_suffix.result}"
   location            = var.location
   resource_group_name = var.resource_group_name
   subnet_id           = var.pe_subnet_id

@@ -1,5 +1,4 @@
 provider "azurerm" {
-  subscription_id = "606e824b-aaf7-4b4e-9057-b459f6a4436d"
   features {}
   use_cli = true
 }
@@ -16,4 +15,24 @@ terraform {
       version = "~> 3.6"
     }
   }
+}
+
+resource "azurerm_resource_provider_registration" "aks" {
+  name = "Microsoft.ContainerService"
+}
+
+resource "azurerm_resource_provider_registration" "network" {
+  name = "Microsoft.Network"
+}
+
+resource "azurerm_resource_provider_registration" "apim" {
+  name = "Microsoft.ApiManagement"
+}
+
+resource "azurerm_resource_provider_registration" "acr" {
+  name = "Microsoft.ContainerRegistry"
+}
+
+resource "azurerm_resource_provider_registration" "kv" {
+  name = "Microsoft.KeyVault"
 }
