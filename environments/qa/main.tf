@@ -104,13 +104,12 @@ module "acr_private_access" {
   resource_group_name = module.base.resource_group_name
   location = module.base.location
 
-  aks_name        = module.aks.name
   vnet_id         = module.base.vnet_id
-  pe_subnet_name  = module.base.subnet_private_endpoints_id
+  pe_subnet_id   = module.base.subnet_private_endpoints_id
   acr_id          = module.acr.id
   acr_name        = module.acr.name
 
-  kubelet_object_id = module.aks.kubelet_identity[0].object_id
+  kubelet_object_id = module.aks.kubelet_id
 }
 
 module "webapp" {

@@ -36,11 +36,11 @@ resource "azurerm_private_endpoint" "acr" {
   name                = "pe-${var.acr_name}"
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = data.azurerm_subnet.pe_subnet.id
+  subnet_id           = var.pe_subnet_id
 
   private_service_connection {
     name                           = "psc-${var.acr_name}"
-    private_connection_resource_id = data.azurerm_container_registry.acr.id
+    private_connection_resource_id = var.acr_id
     subresource_names              = ["registry"]
     is_manual_connection           = false
   }
