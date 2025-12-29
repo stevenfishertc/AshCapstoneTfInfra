@@ -22,13 +22,14 @@ resource "azurerm_linux_web_app" "webapp" {
 
     application_stack {
       docker_image_name   = var.container_image
-      docker_registry_url = var.container_registry_url
     }
   }
 
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
     WEBSITES_PORT                       = "80"
+
+    DOCKER_REGISTRY_SERVER_URL = var.container_registry_url
   }
 
   tags = var.tags
