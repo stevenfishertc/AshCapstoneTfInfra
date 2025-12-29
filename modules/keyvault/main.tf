@@ -52,6 +52,11 @@ resource "azurerm_key_vault_access_policy" "terraform" {
   certificate_permissions = [
     "Get", "List"
   ]
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = all
+  }
 }
 
 output "id"   { value = azurerm_key_vault.kv.id }
