@@ -95,3 +95,22 @@ resource "azurerm_subnet" "postgres_delegated" {
   }
 }
 
+
+
+## dns zones
+
+resource "azurerm_private_dns_zone" "apim" {
+  name                = var.private_dns_zones.apim
+  resource_group_name = azurerm_resource_group.rg.name
+  tags                = var.tags
+} 
+
+resource "azurerm_private_dns_zone" "postgres" {
+  name                = var.private_dns_zones.postgres
+  resource_group_name = azurerm_resource_group.rg.name
+  tags                = var.tags
+
+  depends_on = [
+    azurerm_private_dns_zone.apim
+  ]
+}

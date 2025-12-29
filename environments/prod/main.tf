@@ -38,7 +38,7 @@ module "acr" {
 
   enable_private_endpoint = var.acr_private_endpoint_enabled
   pe_subnet_id            = module.base.subnet_private_endpoints_id
-  private_dns_zone_id     = module.base.private_dns_zone_acr_id
+  private_dns_zone_id     = module.acr_private_access.private_dns_zone_acr_id
 
   tags = local.tags
 }
@@ -52,7 +52,6 @@ module "keyvault" {
 
   enable_private_endpoint = true
   pe_subnet_id            = module.base.subnet_private_endpoints_id
-  private_dns_zone_id     = module.base.private_dns_zone_keyvault_id
 
   tags = local.tags
 }
