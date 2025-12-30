@@ -92,8 +92,6 @@ module "webapp" {
   location            = var.location
   resource_group_name = module.base.resource_group_name
 
-  node_version = var.node_version
-
   app_service_plan_name = "steven-app-service-plan-dev"
 
   container_registry_url = "https://apim-capstone-dev-a1b2c.azure-api.net"

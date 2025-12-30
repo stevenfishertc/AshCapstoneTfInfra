@@ -22,7 +22,11 @@ variable "container_image" {
   default     = "nginx:alpine"
 }
 
-variable "node_version" {}
+variable "node_version" {
+  description = "Node.js version for App Service"
+  type        = string
+  default     = "18-lts"
+}
 
 variable "container_registry_url" {
   type        = string
