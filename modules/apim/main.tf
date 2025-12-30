@@ -3,10 +3,6 @@
 # }
 
 resource "azurerm_api_management" "apim" {
-  # depends_on = [
-  #   azurerm_resource_provider_registration.apim
-  # ]
-
   name                = var.name
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -22,15 +18,6 @@ resource "azurerm_api_management" "apim" {
     subnet_id = var.subnet_id
   }
 
-  depends_on = [
-    var.vnet_ready_dependency
-  ]
-
-  timeouts {
-    create = "90m"
-    update = "90m"
-    delete = "90m"
-  }
 
   tags = var.tags
 }

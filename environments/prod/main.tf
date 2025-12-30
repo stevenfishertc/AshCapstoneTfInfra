@@ -34,24 +34,11 @@ module "acr" {
   location            = var.location
   resource_group_name = module.base.resource_group_name
   sku                 = var.acr_sku
-  admin_enabled       = true
+  admin_enabled       = false
 
   enable_private_endpoint = var.acr_private_endpoint_enabled
   pe_subnet_id            = module.base.subnet_private_endpoints_id
   private_dns_zone_id     = module.acr_private_access.private_dns_zone_acr_id
-
-  tags = local.tags
-}
-
-module "keyvault" {
-  source              = "../../modules/keyvault"
-  name                = "kv-${local.name_prefix}-${var.unique_suffix}"
-  location            = var.location
-  resource_group_name = module.base.resource_group_name
-  tenant_id           = var.tenant_id
-
-  enable_private_endpoint = true
-  pe_subnet_id            = module.base.subnet_private_endpoints_id
 
   tags = local.tags
 }
@@ -98,26 +85,14 @@ module "aks" {
   tags = local.tags
 }
 
-module "acr_private_access" {
-  source = "../../modules/acr_private_access"
-
-  resource_group_name = module.base.resource_group_name
-  location = module.base.location
-
-  vnet_id         = module.base.vnet_id
-  pe_subnet_id    = module.base.subnet_private_endpoints_id
-  acr_id          = module.acr.id
-  acr_name        = module.acr.name
-
-  kubelet_object_id = module.aks.kubelet_id
-}
-
 module "webapp" {
   source = "../../modules/webapp"
 
   name                = "stevens-webapp-frontend-prod"
   location            = var.location
   resource_group_name = module.base.resource_group_name
+
+  node_version = var.node_version
 
   app_service_plan_name = "steven-app-service-plan-prod"
 

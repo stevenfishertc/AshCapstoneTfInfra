@@ -22,6 +22,8 @@ variable "container_image" {
   default     = "nginx:alpine"
 }
 
+variable "node_version" {}
+
 variable "container_registry_url" {
   type        = string
   description = "Container registry URL (e.g. https://index.docker.io)"

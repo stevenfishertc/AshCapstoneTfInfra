@@ -3,26 +3,22 @@ resource "azurerm_postgresql_flexible_server" "pg" {
   resource_group_name = var.resource_group_name
   location            = var.location
 
-  version = var.pg_version
-
-  sku_name = var.sku_name
-  storage_mb = var.storage_mb
-
   administrator_login    = var.administrator_login
   administrator_password = var.administrator_password
 
-  # Private access pattern
-  delegated_subnet_id = var.delegated_subnet_id
-  private_dns_zone_id = var.private_dns_zone_id
+  sku_name = var.sku_name
+  version = var.pg_version
+  storage_mb = var.storage_mb
+
+  backup_retention_days  = 7
+  zone                   = "1"
+
+  delegated_subnet_id    = null
+  private_dns_zone_id    = null
+
+  public_network_access_enabled = true
 
   tags = var.tags
-
-  lifecycle {
-    ignore_changes = [
-      zone,
-      version
-    ]
-  }
 }
 
 resource "azurerm_postgresql_flexible_server_database" "db" {
@@ -30,13 +26,4 @@ resource "azurerm_postgresql_flexible_server_database" "db" {
   server_id = azurerm_postgresql_flexible_server.pg.id
   charset   = "UTF8"
   collation = "en_US.utf8"
-}
-
-output "fqdn" {
-  value = azurerm_postgresql_flexible_server.pg.fqdn
-}
-
-output "connection_string" {
-  value = "postgresql://${var.administrator_login}:${var.administrator_password}@${azurerm_postgresql_flexible_server.pg.fqdn}:5432/${var.db_name}?sslmode=require"
-  sensitive = true
 }

@@ -1,1 +1,0 @@
-output "private_dns_zone_acr_id" { value = azurerm_private_dns_zone.acr.id }

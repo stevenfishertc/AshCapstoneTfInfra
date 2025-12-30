@@ -15,25 +15,33 @@ resource "azurerm_linux_web_app" "webapp" {
   resource_group_name = var.resource_group_name
   service_plan_id     = azurerm_service_plan.plan.id
 
-  https_only = true
-
-  identity {
-    type = "SystemAssigned"
-  }
-
   site_config {
-    always_on = true
+    application_stack {
+      node_version = var.node_version
+    }
   }
 
   app_settings = {
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
-    WEBSITES_PORT                       = "80"
-
-    # Container configuration (authoritative)
-    DOCKER_CUSTOM_IMAGE_NAME   = var.container_image
-    DOCKER_REGISTRY_SERVER_URL = var.container_registry_url
+    "WEBSITE_RUN_FROM_PACKAGE" = "1"
+    "REACT_APP_API_URL"        = ""   # Will be set later via pipeline (APIM URL)
   }
 
   tags = var.tags
+
+
+  # https_only = true
+
+  # identity {
+  #   type = "SystemAssigned"
+  # }
+
+  # app_settings = {
+  #   WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
+  #   WEBSITES_PORT                       = "80"
+
+  #   # Container configuration (authoritative)
+  #   DOCKER_CUSTOM_IMAGE_NAME   = var.container_image
+  #   DOCKER_REGISTRY_SERVER_URL = var.container_registry_url
+  # }
 }
 
