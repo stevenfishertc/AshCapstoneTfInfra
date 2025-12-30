@@ -14,6 +14,5 @@ variable "pg_version"     { type = string }
 variable "storage_mb"  { type = number }
 
 variable "delegated_subnet_id" { type = string }
-variable "private_dns_zone_id" { type = string }
 
 variable "tags" { type = map(string) }

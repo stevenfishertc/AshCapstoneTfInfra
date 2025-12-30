@@ -18,13 +18,6 @@ module "base" {
   subnet_apim_cidr     = var.subnet_apim_cidr
   subnet_pg_cidr       = var.subnet_pg_cidr
 
-  private_dns_zones = {
-    keyvault = "privatelink.vaultcore.azure.net"
-    acr      = "privatelink.azurecr.io"
-    apim     = "privatelink.azure-api.net"
-    postgres = "privatelink.postgres.database.azure.com"
-  }
-
   tags = local.tags
 }
 
@@ -35,10 +28,6 @@ module "acr" {
   resource_group_name = module.base.resource_group_name
   sku                 = var.acr_sku
   admin_enabled       = false
-
-  enable_private_endpoint = var.acr_private_endpoint_enabled
-  pe_subnet_id            = module.base.subnet_private_endpoints_id
-  private_dns_zone_id     = module.acr_private_access.private_dns_zone_acr_id
 
   tags = local.tags
 }
@@ -56,9 +45,7 @@ module "postgres" {
   pg_version             = var.pg_version
   storage_mb             = var.pg_storage_mb
 
-  # Private access mode (delegated subnet)
   delegated_subnet_id = module.base.subnet_postgres_delegated_id
-  private_dns_zone_id = module.base.private_dns_zone_postgres_id
 
   tags = local.tags
 }
@@ -75,7 +62,6 @@ module "aks" {
 
   # Integrations
   acr_id                 = module.acr.id
-  keyvault_id            = module.keyvault.id
 
   enable_rbac_assignments = var.enable_rbac_assignments
 
@@ -114,23 +100,8 @@ module "apim" {
   virtual_network_type = "Internal"
 
   subnet_id              = module.base.subnet_apim_id
-  private_dns_zone_id    = module.base.private_dns_zone_apim_id
 
   vnet_ready_dependency = module.base.vnet_id
 
   tags = local.tags
-}
-
-# Store connection strings in Key Vault (env-specific)
-resource "azurerm_key_vault_secret" "pg_conn_string" {
-  count = var.enable_keyvault_secrets ? 1 : 0
-
-  name         = "postgres-conn-string"
-  value        = module.postgres.connection_string
-  key_vault_id = module.keyvault.id
-  depends_on   = [module.keyvault, module.postgres]
-}
-
-locals {
-  postgres_conn_string = var.enable_keyvault_secrets ? azurerm_key_vault_secret.pg_conn_string[0].value : null
 }

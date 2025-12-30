@@ -8,13 +8,4 @@ variable "subnet_pe_cidr"       { type = string }
 variable "subnet_apim_cidr"     { type = string }
 variable "subnet_pg_cidr"       { type = string }
 
-variable "private_dns_zones" {
-  type = object({
-    keyvault = string
-    acr      = string
-    apim     = string
-    postgres = string
-  })
-}
-
 variable "tags" { type = map(string) }

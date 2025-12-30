@@ -13,6 +13,5 @@ variable "node_vm_size" { type = string }
 variable "node_count"   { type = number }
 
 variable "acr_id"      { type = string }
-variable "keyvault_id" { type = string }
 
 variable "tags" { type = map(string) }

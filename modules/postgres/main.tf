@@ -13,10 +13,10 @@ resource "azurerm_postgresql_flexible_server" "pg" {
   backup_retention_days  = 7
   zone                   = "1"
 
-  delegated_subnet_id    = null
+  delegated_subnet_id    = var.delegated_subnet_id
   private_dns_zone_id    = null
 
-  public_network_access_enabled = true
+  # public_network_access_enabled = true
 
   tags = var.tags
 }
