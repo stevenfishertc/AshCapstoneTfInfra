@@ -14,9 +14,7 @@ module "base" {
   vnet_cidr           = var.vnet_cidr
 
   subnet_aks_cidr      = var.subnet_aks_cidr
-  subnet_pe_cidr       = var.subnet_pe_cidr
   subnet_apim_cidr     = var.subnet_apim_cidr
-  subnet_pg_cidr       = var.subnet_pg_cidr
 
   tags = local.tags
 }
@@ -44,8 +42,6 @@ module "postgres" {
   sku_name               = var.pg_sku_name
   pg_version             = var.pg_version
   storage_mb             = var.pg_storage_mb
-
-  delegated_subnet_id = module.base.subnet_postgres_delegated_id
 
   tags = local.tags
 }

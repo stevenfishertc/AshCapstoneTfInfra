@@ -18,6 +18,12 @@ resource "azurerm_api_management" "apim" {
     subnet_id = var.subnet_id
   }
 
+  timeouts {
+    create = "2h"
+    update = "2h"
+    delete = "2h"
+  }
+
 
   tags = var.tags
 }

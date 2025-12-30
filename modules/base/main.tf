@@ -28,22 +28,6 @@ resource "azurerm_subnet" "apim" {
   address_prefixes     = [var.subnet_apim_cidr]
 }
 
-# Delegated subnet for PostgreSQL Flexible Server private access
-resource "azurerm_subnet" "postgres_delegated" {
-  name                 = "snet-postgres"
-  resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = [var.subnet_pg_cidr]
-
-  delegation {
-    name = "pg-flex-delegation"
-    service_delegation {
-      name    = "Microsoft.DBforPostgreSQL/flexibleServers"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
-    }
-  }
-}
-
 # Security groups and rules for APIM
 resource "azurerm_network_security_group" "apim" {
   name                = "nsg-apim"

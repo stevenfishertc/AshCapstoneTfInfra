@@ -13,7 +13,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   default_node_pool {
-    name           = "steven-system"
+    name           = "stevensystem"
     vm_size        = var.node_vm_size
     node_count     = var.node_count
     vnet_subnet_id = var.subnet_id

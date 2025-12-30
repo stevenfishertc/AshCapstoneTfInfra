@@ -13,6 +13,4 @@ variable "sku_name"    { type = string }
 variable "pg_version"     { type = string }
 variable "storage_mb"  { type = number }
 
-variable "delegated_subnet_id" { type = string }
-
 variable "tags" { type = map(string) }
