@@ -6,7 +6,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = var.resource_group_name
   dns_prefix          = var.name
 
-  kubernetes_version  = var.kubernetes_version
+  # kubernetes_version  = var.kubernetes_version
   
   identity {
     type         = "SystemAssigned"
