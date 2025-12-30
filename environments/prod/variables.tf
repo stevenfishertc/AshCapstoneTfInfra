@@ -65,7 +65,11 @@ variable "pg_storage_mb"     {
 variable "aks_version"       { type = string }
 variable "aks_node_vm_size"  { type = string }
 variable "aks_node_count"    { type = number }
-variable "node_version"      { type = string }
+variable "node_version" {
+  description = "Node.js version for App Service"
+  type        = string
+  default     = "18-lts"
+}
 
 # APIM
 variable "apim_publisher_name"  { type = string }
