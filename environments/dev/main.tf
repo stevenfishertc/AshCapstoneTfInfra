@@ -96,7 +96,7 @@ module "apim" {
 
   subnet_id              = module.base.subnet_apim_id
 
-  vnet_ready_dependency = module.base.vnet_id
+  subnet_ready_dependency = module.base.vnet_id
 
   tags = local.tags
 }

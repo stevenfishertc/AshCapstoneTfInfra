@@ -1,7 +1,3 @@
-# resource "azurerm_resource_provider_registration" "apim" {
-#   name = "Microsoft.ApiManagement"
-# }
-
 resource "azurerm_api_management" "apim" {
   name                = var.name
   location            = var.location
@@ -17,6 +13,10 @@ resource "azurerm_api_management" "apim" {
   virtual_network_configuration {
     subnet_id = var.subnet_id
   }
+
+  depends_on = [
+    var.subnet_ready_dependency
+  ]
 
   timeouts {
     create = "2h"

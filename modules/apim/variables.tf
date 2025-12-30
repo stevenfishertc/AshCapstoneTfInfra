@@ -11,4 +11,4 @@ variable "subnet_id" { type = string }
 
 variable "tags" { type = map(string) }
 
-variable "vnet_ready_dependency" { type = any }
+variable "subnet_ready_dependency" { type = any }
