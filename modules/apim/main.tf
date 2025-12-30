@@ -22,6 +22,10 @@ resource "azurerm_api_management" "apim" {
     subnet_id = var.subnet_id
   }
 
+  depends_on = [
+    var.vnet_ready_dependency
+  ]
+
   timeouts {
     create = "90m"
     update = "90m"

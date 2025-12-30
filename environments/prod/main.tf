@@ -141,6 +141,8 @@ module "apim" {
   subnet_id              = module.base.subnet_apim_id
   private_dns_zone_id    = module.base.private_dns_zone_apim_id
 
+  vnet_ready_dependency = module.base.vnet_id
+
   tags = local.tags
 }
 
