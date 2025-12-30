@@ -10,6 +10,11 @@ pr:
 
 variables:
   AZURE_SUBSCRIPTION: 'stevens-capstone-conn'   # Service connection name
+
+  PROD_SERVICE_CONN: 'stevens-capstone-prod-conn'    # Service connection name for PROD
+  QA_SERVICE_CONN: 'stevens-capstone-qa-conn'       # Service connection name for QA
+  DEV_SERVICE_CONN: 'stevens-capstone-dev-conn'      # Service connection name for DEV
+
   TENANT_ID: ''                                # To be set in pipeline
 
 stages:
@@ -47,10 +52,6 @@ stages:
               TENANT_ID=$(az account show --query tenantId -o tsv)
               echo "Tenant from az: $TENANT_ID"
               echo "##vso[task.setvariable variable=TENANT_ID]$TENANT_ID"
-              az provider register --namespace Microsoft.ContainerService
-              az provider register --namespace Microsoft.Network
-              az provider register --namespace Microsoft.Compute
-
 
         - task: TerraformTaskV4@4
           displayName: "Terraform Init (Dev)"
@@ -77,16 +78,115 @@ stages:
             workingDirectory: environments/dev
             commandOptions: "-var-file=dev.tfvars -out=tfplan"
 
-        - task: TerraformTaskV4@4
-          displayName: "Terraform Apply (Dev)"
+        - task: AzureCLI@2
+          displayName: Register AKS resource provider (and wait)
           env:
             TF_VAR_tenant_id: $(TENANT_ID)
           inputs:
-            provider: azurerm
-            command: apply
-            environmentServiceNameAzureRM: stevens-capstone-conn
-            workingDirectory: environments/dev
-            commandOptions: "-auto-approve tfplan"
+            azureSubscription: $(DEV_SERVICE_CONN)
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              set -euo pipefail
+
+              echo "Registering Microsoft.ContainerService..."
+              az provider register --namespace Microsoft.ContainerService --wait
+
+              # Extra safety: poll until Registered (sometimes --wait returns early in CI)
+              for i in {1..60}; do
+                state=$(az provider show --namespace Microsoft.ContainerService --query "registrationState" -o tsv)
+                echo "Microsoft.ContainerService registrationState: $state"
+                if [[ "$state" == "Registered" ]]; then
+                  echo "Provider registered."
+                  exit 0
+                fi
+                sleep 10
+              done
+
+              echo "Provider did not reach Registered state in time."
+              exit 1
+
+        - task: AzureCLI@2
+          displayName: Terraform Apply - Base (DEV)
+          env:
+            TF_VAR_tenant_id: $(TENANT_ID)
+          inputs:
+            azureSubscription: $(DEV_SERVICE_CONN)
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              set -euo pipefail
+              cd environments/dev
+
+              terraform apply -auto-approve \
+                -target=module.base
+
+        - task: AzureCLI@2
+          displayName: Terraform Apply - Key Vault (DEV)
+          env:
+            TF_VAR_tenant_id: $(TENANT_ID)
+          inputs:
+            azureSubscription: $(DEV_SERVICE_CONN)
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              set -euo pipefail
+              cd environments/dev
+
+              terraform apply -auto-approve \
+                -target=module.keyvault
+
+        - script: sleep 60
+          displayName: Wait for Key Vault RBAC propagation
+
+        - task: AzureCLI@2
+          displayName: Terraform Apply - Core Services (DEV)
+          env:
+            TF_VAR_tenant_id: $(TENANT_ID)
+          inputs:
+            azureSubscription: $(DEV_SERVICE_CONN)
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              set -euo pipefail
+              cd environments/dev
+
+              terraform apply -auto-approve \
+                -target=module.aks \
+                -target=module.acr \
+                -target=module.acr_private_access \
+                -target=module.postgres
+
+        - task: AzureCLI@2
+          displayName: Terraform Apply - APIM (DEV)
+          env:
+            TF_VAR_tenant_id: $(TENANT_ID)
+          inputs:
+            azureSubscription: $(DEV_SERVICE_CONN)
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              set -euo pipefail
+              cd environments/dev
+
+              terraform apply -auto-approve \
+                -target=module.apim
+
+        - task: AzureCLI@2
+          displayName: Terraform Final Apply (DEV)
+          env:
+            TF_VAR_tenant_id: $(TENANT_ID)
+          inputs:
+            azureSubscription: $(DEV_SERVICE_CONN)
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              set -euo pipefail
+              cd environments/dev
+
+              terraform apply -auto-approve
+
+
 
 # ---------------------------------------------------
 # 2. QA DEPLOYMENT (Manual Approval Before Running)
@@ -127,9 +227,6 @@ stages:
                     TENANT_ID=$(az account show --query tenantId -o tsv)
                     echo "Tenant from az: $TENANT_ID"
                     echo "##vso[task.setvariable variable=TENANT_ID]$TENANT_ID"
-                    az provider register --namespace Microsoft.ContainerService
-                    az provider register --namespace Microsoft.Network
-                    az provider register --namespace Microsoft.Compute
 
               - task: TerraformTaskV4@4
                 displayName: "Terraform Init (QA)"
@@ -156,16 +253,113 @@ stages:
                   workingDirectory: environments/qa
                   commandOptions: "-var-file=qa.tfvars -out=tfplan"
 
-              - task: TerraformTaskV4@4
-                displayName: "Terraform Apply (QA)"
+              - task: AzureCLI@2
+                displayName: Register AKS resource provider (and wait)
                 env:
                   TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
-                  provider: azurerm
-                  command: apply
-                  environmentServiceNameAzureRM: stevens-capstone-conn
-                  workingDirectory: environments/qa
-                  commandOptions: "-auto-approve tfplan"
+                  azureSubscription: $(QA_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+
+                    echo "Registering Microsoft.ContainerService..."
+                    az provider register --namespace Microsoft.ContainerService --wait
+
+                    # Extra safety: poll until Registered (sometimes --wait returns early in CI)
+                    for i in {1..60}; do
+                      state=$(az provider show --namespace Microsoft.ContainerService --query "registrationState" -o tsv)
+                      echo "Microsoft.ContainerService registrationState: $state"
+                      if [[ "$state" == "Registered" ]]; then
+                        echo "Provider registered."
+                        exit 0
+                      fi
+                      sleep 10
+                    done
+
+                    echo "Provider did not reach Registered state in time."
+                    exit 1
+
+              - task: AzureCLI@2
+                displayName: Terraform Apply - Base (QA)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(QA_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/qa
+
+                    terraform apply -auto-approve \
+                      -target=module.base
+
+              - task: AzureCLI@2
+                displayName: Terraform Apply - Key Vault (QA)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(QA_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/qa
+
+                    terraform apply -auto-approve \
+                      -target=module.keyvault
+
+              - script: sleep 60
+                displayName: Wait for Key Vault RBAC propagation
+
+              - task: AzureCLI@2
+                displayName: Terraform Apply - Core Services (QA)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(QA_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/qa
+
+                    terraform apply -auto-approve \
+                      -target=module.aks \
+                      -target=module.acr \
+                      -target=module.acr_private_access \
+                      -target=module.postgres
+
+              - task: AzureCLI@2
+                displayName: Terraform Apply - APIM (QA)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(QA_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/qa
+
+                    terraform apply -auto-approve \
+                      -target=module.apim
+
+              - task: AzureCLI@2
+                displayName: Terraform Final Apply (QA)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(QA_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/qa
+
+                    terraform apply -auto-approve
 
 # ---------------------------------------------------
 # 2. PROD DEPLOYMENT (Manual Approval Before Running)
@@ -176,7 +370,7 @@ stages:
   condition: succeeded()
 
   jobs:
-    - deployment: TerraformProd          # <-- deployment job required
+    - deployment: TerraformProd
       displayName: "Terraform Apply (Prod)"
       environment: "production-env"
       
@@ -199,16 +393,13 @@ stages:
               - task: AzureCLI@2
                 displayName: "Get tenant ID for Terraform variables"
                 inputs:
-                  azureSubscription: $(AZURE_SUBSCRIPTION)
+                  azureSubscription: $(PROD_SERVICE_CONN)
                   scriptType: bash
                   scriptLocation: inlineScript
                   inlineScript: |
                     TENANT_ID=$(az account show --query tenantId -o tsv)
                     echo "Tenant from az: $TENANT_ID"
                     echo "##vso[task.setvariable variable=TENANT_ID]$TENANT_ID"
-                    az provider register --namespace Microsoft.ContainerService
-                    az provider register --namespace Microsoft.Network
-                    az provider register --namespace Microsoft.Compute
 
               - task: TerraformTaskV4@4
                 displayName: "Terraform Init (Prod)"
@@ -235,15 +426,112 @@ stages:
                   workingDirectory: environments/prod
                   commandOptions: "-var-file=prod.tfvars -out=tfplan"
 
-              - task: TerraformTaskV4@4
-                displayName: "Terraform Apply (Prod)"
+              - task: AzureCLI@2
+                displayName: Register AKS resource provider (and wait)
                 env:
                   TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
-                  provider: azurerm
-                  command: apply
-                  environmentServiceNameAzureRM: stevens-capstone-conn
-                  workingDirectory: environments/prod
-                  commandOptions: "-auto-approve tfplan"
+                  azureSubscription: $(PROD_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+
+                    echo "Registering Microsoft.ContainerService..."
+                    az provider register --namespace Microsoft.ContainerService --wait
+
+                    # Extra safety: poll until Registered (sometimes --wait returns early in CI)
+                    for i in {1..60}; do
+                      state=$(az provider show --namespace Microsoft.ContainerService --query "registrationState" -o tsv)
+                      echo "Microsoft.ContainerService registrationState: $state"
+                      if [[ "$state" == "Registered" ]]; then
+                        echo "Provider registered."
+                        exit 0
+                      fi
+                      sleep 10
+                    done
+
+                    echo "Provider did not reach Registered state in time."
+                    exit 1
+
+              - task: AzureCLI@2
+                displayName: Terraform Apply - Base (PROD)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(PROD_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/prod
+
+                    terraform apply -auto-approve \
+                      -target=module.base
+
+              - task: AzureCLI@2
+                displayName: Terraform Apply - Key Vault (PROD)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(PROD_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/prod
+
+                    terraform apply -auto-approve \
+                      -target=module.keyvault
+
+              - script: sleep 60
+                displayName: Wait for Key Vault RBAC propagation
+
+              - task: AzureCLI@2
+                displayName: Terraform Apply - Core Services (PROD)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(PROD_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/prod
+
+                    terraform apply -auto-approve \
+                      -target=module.aks \
+                      -target=module.acr \
+                      -target=module.acr_private_access \
+                      -target=module.postgres
+
+              - task: AzureCLI@2
+                displayName: Terraform Apply - APIM (PROD)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(PROD_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/prod
+
+                    terraform apply -auto-approve \
+                      -target=module.apim
+
+              - task: AzureCLI@2
+                displayName: Terraform Final Apply (PROD)
+                env:
+                  TF_VAR_tenant_id: $(TENANT_ID)
+                inputs:
+                  azureSubscription: $(PROD_SERVICE_CONN)
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    set -euo pipefail
+                    cd environments/prod
+
+                    terraform apply -auto-approve
 
 
