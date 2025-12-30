@@ -83,7 +83,7 @@ stages:
           env:
             TF_VAR_tenant_id: $(TENANT_ID)
           inputs:
-            azureSubscription: $(DEV_SERVICE_CONN)
+            azureSubscription: $(AZURE_SUBSCRIPTION)
             scriptType: bash
             scriptLocation: inlineScript
             inlineScript: |
@@ -163,7 +163,7 @@ stages:
                 env:
                   TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
-                  azureSubscription: $(QA_SERVICE_CONN)
+                  azureSubscription: $(AZURE_SUBSCRIPTION)
                   scriptType: bash
                   scriptLocation: inlineScript
                   inlineScript: |
@@ -242,7 +242,7 @@ stages:
                 env:
                   TF_VAR_tenant_id: $(TENANT_ID)
                 inputs:
-                  azureSubscription: $(PROD_SERVICE_CONN)
+                  azureSubscription: $(AZURE_SUBSCRIPTION)
                   scriptType: bash
                   scriptLocation: inlineScript
                   inlineScript: |
