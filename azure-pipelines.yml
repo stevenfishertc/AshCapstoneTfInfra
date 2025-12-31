@@ -204,7 +204,7 @@ stages:
               - task: AzureCLI@2
                 displayName: "Get tenant ID for Terraform variables"
                 inputs:
-                  azureSubscription: $(PROD_SERVICE_CONN)
+                  azureSubscription: $(AZURE_SUBSCRIPTION)
                   scriptType: bash
                   scriptLocation: inlineScript
                   inlineScript: |
