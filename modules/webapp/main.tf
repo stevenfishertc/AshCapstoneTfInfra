@@ -21,9 +21,14 @@ resource "azurerm_linux_web_app" "webapp" {
     }
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" = "1"
     "REACT_APP_API_URL"        = ""   # Will be set later via pipeline (APIM URL)
+    WEBSITES_PORT              = "8080"
   }
 
   tags = var.tags
