@@ -15,6 +15,14 @@ variables:
   QA_SERVICE_CONN: 'stevens-capstone-qa-conn'       # Service connection name for QA
   DEV_SERVICE_CONN: 'stevens-capstone-dev-conn'      # Service connection name for DEV
 
+  DEV_RESOURCE_GROUP:  steven-rg-capstone-dev
+  QA_RESOURCE_GROUP:   steven-rg-capstone-qa
+  PROD_RESOURCE_GROUP: steven-rg-capstone-prod
+
+  DEV_API_URL:  https://apim-capstone-dev-a1b2c.azure-api.net
+  QA_API_URL:   https://apim-capstone-qa-a1b2c.azure-api.net
+  PROD_API_URL: https://apim-capstone-prod-a1b2c.azure-api.net
+
   TENANT_ID: ''                                # To be set in pipeline
 
 stages:
@@ -91,6 +99,11 @@ stages:
               cd environments/dev
 
               terraform apply -auto-approve tfplan
+
+              az webapp config appsettings set \
+                --name $(DEV_WEBAPP_NAME) \
+                --resource-group $(DEV_RESOURCE_GROUP) \
+                --settings REACT_APP_API_URL=$(DEV_API_URL)
 
 
 # ---------------------------------------------------
@@ -172,6 +185,11 @@ stages:
 
                     terraform apply -auto-approve tfplan
 
+                    az webapp config appsettings set \
+                      --name $(QA_WEBAPP_NAME) \
+                      --resource-group $(QA_RESOURCE_GROUP) \
+                      --settings REACT_APP_API_URL=$(QA_API_URL)
+
 # ---------------------------------------------------
 # 2. PROD DEPLOYMENT (Manual Approval Before Running)
 # ---------------------------------------------------
@@ -250,5 +268,10 @@ stages:
                     cd environments/prod
 
                     terraform apply -auto-approve tfplan
+
+                    az webapp config appsettings set \
+                      --name $(PROD_WEBAPP_NAME) \
+                      --resource-group $(PROD_RESOURCE_GROUP) \
+                      --settings REACT_APP_API_URL=$(PROD_API_URL)
 
 
