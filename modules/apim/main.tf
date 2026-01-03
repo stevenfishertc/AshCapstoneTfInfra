@@ -61,3 +61,15 @@ resource "azurerm_api_management_api" "backend_b" {
 
   service_url  = "http://backend-b.${var.environment}.capstone.com"
 }
+
+resource "azurerm_private_dns_zone" "apim" {
+  name                = "privatelink.azure-api.net"
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "apim_link" {
+  name                  = "apim-dns-link"
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.apim.name
+  virtual_network_id    = var.vnet_id
+}

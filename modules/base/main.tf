@@ -28,6 +28,13 @@ resource "azurerm_subnet" "apim" {
   address_prefixes     = [var.subnet_apim_cidr]
 }
 
+resource "azurerm_subnet" "webapp" {
+  name                 = "snet-webapp"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = [var.subnet_webapp_cidr]
+}
+
 # Security groups and rules for APIM
 resource "azurerm_network_security_group" "apim" {
   name                = "nsg-apim"

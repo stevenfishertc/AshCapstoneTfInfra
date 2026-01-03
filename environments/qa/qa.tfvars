@@ -14,6 +14,7 @@ subnet_aks_cidr  = "10.10.1.0/24"
 subnet_pe_cidr   = "10.10.2.0/24"
 subnet_apim_cidr = "10.10.3.0/24"
 subnet_pg_cidr   = "10.10.4.0/24"
+subnet_webapp_cidr = "10.10.5.0/24"
 
 acr_sku = "Premium"
 acr_private_endpoint_enabled = true

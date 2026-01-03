@@ -8,6 +8,7 @@ variable "publisher_email" { type = string }
 
 variable "sku_name" { type = string } # Developer_1 or Premium_1
 variable "virtual_network_type" { type = string } # Internal or External
+variable "vnet_id" { type = string }
 variable "subnet_id" { type = string }
 
 variable "tags" { type = map(string) }

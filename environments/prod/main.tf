@@ -15,6 +15,7 @@ module "base" {
 
   subnet_aks_cidr      = var.subnet_aks_cidr
   subnet_apim_cidr     = var.subnet_apim_cidr
+  subnet_webapp_cidr   = var.subnet_webapp_cidr
 
   tags = local.tags
 }
@@ -74,6 +75,8 @@ module "webapp" {
   location            = var.location
   resource_group_name = module.base.resource_group_name
 
+  webapp_subnet_id    = module.base.subnet_webapp_id
+
   node_version = var.node_version
 
   app_service_plan_name = "steven-app-service-plan-prod"
@@ -95,6 +98,7 @@ module "apim" {
   publisher_email = var.apim_publisher_email
   sku_name        = var.apim_sku_name # Developer_1 or Premium_1
   virtual_network_type = "Internal"
+  vnet_id              = module.base.vnet_id
 
   subnet_id              = module.base.subnet_apim_id
 

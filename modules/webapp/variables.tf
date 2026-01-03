@@ -12,6 +12,11 @@ variable "location" {
   type        = string
 }
 
+variable "webapp_subnet_id" {
+  type        = string
+  description = "The ID of the subnet to deploy the web app into"
+}
+
 variable "app_service_plan_name" {
   type        = string
 }
