@@ -33,6 +33,17 @@ resource "azurerm_subnet" "webapp" {
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet_webapp_cidr]
+
+  delegation {
+    name = "webapp-delegation"
+
+    service_delegation {
+      name = "Microsoft.Web/serverFarms"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/action"
+      ]
+    }
+  }
 }
 
 # Security groups and rules for APIM
