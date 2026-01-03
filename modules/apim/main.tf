@@ -46,7 +46,7 @@ resource "azurerm_api_management_api" "backend_a" {
   path         = "api/a"
   protocols    = ["https"]
 
-  service_url  = "http://backend-a." + var.environment + ".capstone.com"
+  service_url  = "http://backend-a.${var.environment}.capstone.com"
 }
 
 resource "azurerm_api_management_api" "backend_b" {
@@ -59,5 +59,5 @@ resource "azurerm_api_management_api" "backend_b" {
   path         = "api/b"
   protocols    = ["https"]
 
-  service_url  = "http://backend-a." + var.environment + ".capstone.com"
+  service_url  = "http://backend-b.${var.environment}.capstone.com"
 }
