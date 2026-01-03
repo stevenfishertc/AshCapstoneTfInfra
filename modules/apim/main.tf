@@ -35,3 +35,29 @@ resource "azurerm_api_management" "apim" {
 output "gateway_url" {
   value = azurerm_api_management.apim.gateway_url
 }
+
+resource "azurerm_api_management_api" "backend_a" {
+  name                = "backend-a-api"
+  resource_group_name = var.resource_group_name
+  api_management_name = azurerm_api_management.apim.name
+
+  revision      = "1"
+  display_name = "Backend A API"
+  path         = "api/a"
+  protocols    = ["https"]
+
+  service_url  = "http://backend-a." + var.environment + ".capstone.com"
+}
+
+resource "azurerm_api_management_api" "backend_b" {
+  name                = "backend-b-api"
+  resource_group_name = var.resource_group_name
+  api_management_name = azurerm_api_management.apim.name
+
+  revision      = "1"
+  display_name = "Backend B API"
+  path         = "api/b"
+  protocols    = ["https"]
+
+  service_url  = "http://backend-a." + var.environment + ".capstone.com"
+}

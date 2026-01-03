@@ -88,6 +88,7 @@ module "apim" {
   name                = "apim-${local.name_prefix}-${var.unique_suffix}"
   location            = var.location
   resource_group_name = module.base.resource_group_name
+  environment         = var.env
 
   publisher_name  = var.apim_publisher_name
   publisher_email = var.apim_publisher_email

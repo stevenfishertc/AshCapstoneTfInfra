@@ -34,19 +34,6 @@ resource "azurerm_linux_web_app" "webapp" {
   tags = var.tags
 
 
-  # https_only = true
-
-  # identity {
-  #   type = "SystemAssigned"
-  # }
-
-  # app_settings = {
-  #   WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
-  #   WEBSITES_PORT                       = "80"
-
-  #   # Container configuration (authoritative)
-  #   DOCKER_CUSTOM_IMAGE_NAME   = var.container_image
-  #   DOCKER_REGISTRY_SERVER_URL = var.container_registry_url
-  # }
+  
 }
 
