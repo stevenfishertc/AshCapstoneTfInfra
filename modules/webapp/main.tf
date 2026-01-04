@@ -20,6 +20,7 @@ resource "azurerm_linux_web_app" "webapp" {
   site_config {
     vnet_route_all_enabled = false
     always_on              = true
+    acr_use_managed_identity_credentials = true
 
     application_stack {
       docker_image_name   = "frontend:bootstrap"
