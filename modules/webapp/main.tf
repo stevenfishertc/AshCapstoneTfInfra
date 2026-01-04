@@ -38,8 +38,8 @@ resource "azurerm_linux_web_app" "webapp" {
     "WEBSITE_DNS_SERVER"     = "168.63.129.16"
     "WEBSITE_DNS_ALT_SERVER" = "8.8.8.8"
 
-    # Optional runtime config for frontend
-    "REACT_APP_API_URL" = ""
+    # Runtime config for frontend - API URL for APIM
+    "REACT_APP_API_URL" = var.api_url
   }
 
   lifecycle {
