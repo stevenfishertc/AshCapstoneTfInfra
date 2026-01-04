@@ -18,7 +18,7 @@ resource "azurerm_linux_web_app" "webapp" {
   virtual_network_subnet_id = var.webapp_subnet_id
 
   site_config {
-    vnet_route_all_enabled = true
+    vnet_route_all_enabled = false
     always_on              = true
 
     application_stack {
@@ -32,7 +32,9 @@ resource "azurerm_linux_web_app" "webapp" {
   }
 
   app_settings = {
-    # 🔴 REMOVE ALL Node / Package settings
+    "DOCKER_REGISTRY_SERVER_USE_MANAGED_IDENTITY" = "true"
+    "DOCKER_REGISTRY_SERVER_URL"                  = "https://${var.acr_login_server}"
+
     "WEBSITE_DNS_SERVER"     = "168.63.129.16"
     "WEBSITE_DNS_ALT_SERVER" = "8.8.8.8"
 
