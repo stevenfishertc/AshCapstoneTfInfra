@@ -4,6 +4,9 @@ resource "azurerm_container_registry" "acr" {
   location            = var.location
   sku                 = var.sku
   admin_enabled       = var.admin_enabled
-  
+
+  # Enable public network access for Web App to pull images
+  public_network_access_enabled = true
+
   tags                = var.tags
 }
