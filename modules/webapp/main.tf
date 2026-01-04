@@ -20,12 +20,13 @@ resource "azurerm_linux_web_app" "webapp" {
   site_config {
     vnet_route_all_enabled = false
     always_on              = true
-    acr_use_managed_identity_credentials = true
 
     application_stack {
       docker_image_name   = "frontend:bootstrap"
       docker_registry_url = "https://${var.acr_login_server}"
     }
+
+    container_registry_use_managed_identity = true
   }
 
   identity {
@@ -33,8 +34,7 @@ resource "azurerm_linux_web_app" "webapp" {
   }
 
   app_settings = {
-    "DOCKER_REGISTRY_SERVER_USE_MANAGED_IDENTITY" = "true"
-    "DOCKER_REGISTRY_SERVER_URL"                  = "https://${var.acr_login_server}"
+    "DOCKER_REGISTRY_SERVER_URL" = "https://${var.acr_login_server}"
 
     "WEBSITE_DNS_SERVER"     = "168.63.129.16"
     "WEBSITE_DNS_ALT_SERVER" = "8.8.8.8"
