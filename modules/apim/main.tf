@@ -40,13 +40,6 @@ resource "azurerm_private_endpoint" "apim_gateway" {
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "apim" {
-  name                  = "apim-dns-link"
-  resource_group_name   = var.resource_group_name
-  private_dns_zone_name = azurerm_private_dns_zone.apim.name
-  virtual_network_id    = var.vnet_id
-}
-
 # APIM doesn't use a Private Endpoint like KV/ACR; it sits in the VNet.
 # The private DNS zone "privatelink.azure-api.net" is still useful for internal resolution
 # depending on your chosen APIM endpoint configuration and internal routing.

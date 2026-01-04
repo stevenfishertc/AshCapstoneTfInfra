@@ -96,7 +96,7 @@ module "apim" {
   publisher_name  = var.apim_publisher_name
   publisher_email = var.apim_publisher_email
   sku_name        = var.apim_sku_name # Developer_1 or Premium_1
-  virtual_network_type = "Internal"
+  virtual_network_type = "External"
   vnet_id              = module.base.vnet_id
 
   subnet_id              = module.base.subnet_apim_id
