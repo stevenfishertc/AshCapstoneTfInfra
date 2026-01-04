@@ -29,6 +29,13 @@ variables:
 
   TENANT_ID: ''                                # To be set in pipeline
 
+  # ----- Container Registry -----
+  DEV_ACR_NAME: acrcapstonedeva1b2c
+  QA_ACR_NAME: acrcapstoneqaa1b2c
+  PROD_ACR_NAME: acrcapstoneproda1b2c
+  ACR_LOGIN_SERVER_SUFFIX: .azurecr.io
+  IMAGE_TAG: $(Build.BuildId)
+
 stages:
 # ---------------------------------------------------
 # 1. DEV DEPLOYMENT
@@ -109,9 +116,17 @@ stages:
                 --resource-group $(DEV_RESOURCE_GROUP) \
                 --settings REACT_APP_API_URL=$(DEV_API_URL)
 
-              az webapp restart \
-                --name $(DEV_WEBAPP_NAME) \
-                --resource-group $(DEV_RESOURCE_GROUP)
+
+              # az webapp config container set \
+              #   --name stevens-webapp-frontend-dev \
+              #   --resource-group $(DEV_RESOURCE_GROUP) \
+              #   --docker-custom-image-name $(DEV_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)/frontend:$(Build.BuildId) \
+              #   --docker-registry-server-url https://$(DEV_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)
+
+
+              # az webapp restart \
+              #   --name $(DEV_WEBAPP_NAME) \
+              #   --resource-group $(DEV_RESOURCE_GROUP)
 
 
 
@@ -199,9 +214,17 @@ stages:
                       --resource-group $(QA_RESOURCE_GROUP) \
                       --settings REACT_APP_API_URL=$(QA_API_URL)
 
-                    az webapp restart \
-                      --name $(QA_WEBAPP_NAME) \
-                      --resource-group $(QA_RESOURCE_GROUP)
+
+                    # az webapp config container set \
+                    #   --name stevens-webapp-frontend-qa \
+                    #   --resource-group $(QA_RESOURCE_GROUP) \
+                    #   --docker-custom-image-name $(QA_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)/frontend:$(Build.BuildId) \
+                    #   --docker-registry-server-url https://$(QA_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)
+
+
+                    # az webapp restart \
+                    #   --name $(QA_WEBAPP_NAME) \
+                    #   --resource-group $(QA_RESOURCE_GROUP)
 
 # ---------------------------------------------------
 # 2. PROD DEPLOYMENT (Manual Approval Before Running)
@@ -287,6 +310,12 @@ stages:
                       --resource-group $(PROD_RESOURCE_GROUP) \
                       --settings REACT_APP_API_URL=$(PROD_API_URL)
 
-                    az webapp restart \
-                      --name $(PROD_WEBAPP_NAME) \
-                      --resource-group $(PROD_RESOURCE_GROUP)
+                    # az webapp config container set \
+                    #   --name stevens-webapp-frontend-prod \
+                    #   --resource-group $(PROD_RESOURCE_GROUP) \
+                    #   --docker-custom-image-name $(PROD_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)/frontend:$(Build.BuildId) \
+                    #   --docker-registry-server-url https://$(PROD_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)
+
+                    # az webapp restart \
+                    #   --name $(PROD_WEBAPP_NAME) \
+                    #   --resource-group $(PROD_RESOURCE_GROUP)

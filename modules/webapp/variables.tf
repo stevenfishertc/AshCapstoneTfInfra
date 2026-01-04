@@ -44,6 +44,16 @@ variable "container_registry_url" {
   default     = "https://index.docker.io"
 }
 
+variable "acr_login_server" {
+  description = "ACR login server (e.g. acrcapstonedeva1b2c.azurecr.io)"
+  type        = string
+}
+
+variable "api_url" {
+  description = "Backend API URL"
+  type        = string
+}
+
 variable "tags" {
   type    = map(string)
   default = {}

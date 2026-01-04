@@ -78,6 +78,9 @@ module "webapp" {
   webapp_subnet_id    = module.base.subnet_webapp_id
 
   acr_id              = module.acr.id
+  acr_login_server    = module.acr.login_server
+
+  api_url             = ""
 
   node_version = var.node_version
 
