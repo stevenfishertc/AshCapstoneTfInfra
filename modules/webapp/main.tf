@@ -38,8 +38,11 @@ resource "azurerm_linux_web_app" "webapp" {
   }
 
   tags = var.tags
-
-
-  
 }
 
+# Allow Webapp to pull from ACR
+resource "azurerm_role_assignment" "webapp_acr_pull" {
+  scope                = var.acr_id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_linux_web_app.webapp.identity.principal_id
+}

@@ -77,6 +77,8 @@ module "webapp" {
 
   webapp_subnet_id    = module.base.subnet_webapp_id
 
+  acr_id              = module.acr.id
+
   node_version = var.node_version
 
   app_service_plan_name = "steven-app-service-plan-qa"

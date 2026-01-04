@@ -21,6 +21,11 @@ variable "app_service_plan_name" {
   type        = string
 }
 
+variable "acr_id" {
+  type        = string
+  description = "The ID of the Azure Container Registry"
+}
+
 variable "container_image" {
   type        = string
   description = "Container image name (e.g. nginx:latest)"
