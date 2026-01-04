@@ -80,13 +80,13 @@ module "webapp" {
   acr_id              = module.acr.id
   acr_login_server    = module.acr.login_server
 
-  api_url             = ""
+  api_url             = "https://apim-capstone-qa-a1b2c.privatelink.azure-api.net"
 
   node_version = var.node_version
 
   app_service_plan_name = "steven-app-service-plan-qa"
 
-  container_registry_url = "https://apim-capstone-qa-a1b2c.azure-api.net"
+  container_registry_url = "https://${module.acr.login_server}"
 
   tags = var.tags
 }
