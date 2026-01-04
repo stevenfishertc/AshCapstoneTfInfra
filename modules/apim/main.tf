@@ -8,6 +8,8 @@ resource "azurerm_api_management" "apim" {
 
   sku_name = var.sku_name
 
+  public_network_access_enabled = true
+
   depends_on = [
     var.subnet_ready_dependency
   ]
@@ -17,7 +19,6 @@ resource "azurerm_api_management" "apim" {
     update = "2h"
     delete = "2h"
   }
-
 
   tags = var.tags
 }
