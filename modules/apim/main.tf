@@ -8,8 +8,6 @@ resource "azurerm_api_management" "apim" {
 
   sku_name = var.sku_name
 
-  virtual_network_type = var.virtual_network_type
-
   depends_on = [
     var.subnet_ready_dependency
   ]
