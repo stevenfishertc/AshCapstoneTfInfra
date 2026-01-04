@@ -19,11 +19,12 @@ resource "azurerm_linux_web_app" "webapp" {
 
   site_config {
     vnet_route_all_enabled = true
+    always_on              = true
 
-    linux_fx_version = "DOCKER|${var.acr_login_server}/frontend:bootstrap"
-
-    # Optional but recommended
-    always_on = true
+    application_stack {
+      docker_image_name   = "frontend:bootstrap"
+      docker_registry_url = "https://${var.acr_login_server}"
+    }
   }
 
   identity {
@@ -41,7 +42,7 @@ resource "azurerm_linux_web_app" "webapp" {
 
   lifecycle {
     ignore_changes = [
-      site_config[0].linux_fx_version
+      site_config[0].application_stack[0].docker_image_name
     ]
   }
 
