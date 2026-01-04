@@ -10,10 +10,6 @@ resource "azurerm_api_management" "apim" {
 
   virtual_network_type = var.virtual_network_type
 
-  virtual_network_configuration {
-    subnet_id = var.subnet_id
-  }
-
   depends_on = [
     var.subnet_ready_dependency
   ]
@@ -26,6 +22,29 @@ resource "azurerm_api_management" "apim" {
 
 
   tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "apim_gateway" {
+  name                = "apim-gateway-pe"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.subnet_id
+
+  private_service_connection {
+    name                           = "apim-gateway-priv-conn"
+    private_connection_resource_id = azurerm_api_management.apim.id
+    subresource_names              = ["Gateway"]
+    is_manual_connection           = false
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "apim" {
+  name                  = "apim-dns-link"
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.apim.name
+  virtual_network_id    = var.vnet_id
 }
 
 # APIM doesn't use a Private Endpoint like KV/ACR; it sits in the VNet.
