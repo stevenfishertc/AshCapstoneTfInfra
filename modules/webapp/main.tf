@@ -18,6 +18,8 @@ resource "azurerm_linux_web_app" "webapp" {
   virtual_network_subnet_id = var.webapp_subnet_id
 
   site_config {
+    vnet_route_all_enabled = true
+    
     application_stack {
       node_version = var.node_version
     }
@@ -31,7 +33,6 @@ resource "azurerm_linux_web_app" "webapp" {
     "WEBSITE_RUN_FROM_PACKAGE" = "1"
     "WEBSITE_DNS_SERVER"       = "168.63.129.16"
     "WEBSITE_DNS_ALT_SERVER"   = "8.8.8.8"
-    "WEBSITE_VNET_ROUTE_ALL"   = "1"
     "REACT_APP_API_URL"        = ""   # Will be set later via pipeline (APIM URL)
     "WEBSITES_PORT"            = "80"
   }

@@ -109,6 +109,11 @@ stages:
                 --resource-group $(DEV_RESOURCE_GROUP) \
                 --settings REACT_APP_API_URL=$(DEV_API_URL)
 
+              az webapp restart \
+                --name $(DEV_WEBAPP_NAME) \
+                --resource-group $(DEV_RESOURCE_GROUP)
+
+
 
 # ---------------------------------------------------
 # 2. QA DEPLOYMENT (Manual Approval Before Running)
@@ -194,6 +199,10 @@ stages:
                       --resource-group $(QA_RESOURCE_GROUP) \
                       --settings REACT_APP_API_URL=$(QA_API_URL)
 
+                    az webapp restart \
+                      --name $(QA_WEBAPP_NAME) \
+                      --resource-group $(QA_RESOURCE_GROUP)
+
 # ---------------------------------------------------
 # 2. PROD DEPLOYMENT (Manual Approval Before Running)
 # ---------------------------------------------------
@@ -278,4 +287,6 @@ stages:
                       --resource-group $(PROD_RESOURCE_GROUP) \
                       --settings REACT_APP_API_URL=$(PROD_API_URL)
 
-
+                    az webapp restart \
+                      --name $(PROD_WEBAPP_NAME) \
+                      --resource-group $(PROD_RESOURCE_GROUP)
