@@ -59,7 +59,7 @@ resource "azurerm_api_management_api" "backend_a" {
   subscription_required = false
 
   # Use AKS ingress LoadBalancer IP if provided, otherwise placeholder
-  service_url  = var.aks_ingress_ip != "" ? "http://${var.aks_ingress_ip}" : "http://placeholder.local"
+  service_url  = var.aks_ingress_ip != "" ? "http://${var.aks_ingress_ip}/api/a" : "http://placeholder.local/api/a"
 }
 
 resource "azurerm_api_management_api_operation" "backend_a_post" {
@@ -85,7 +85,7 @@ resource "azurerm_api_management_api" "backend_b" {
   subscription_required = false
 
   # Use AKS ingress LoadBalancer IP if provided, otherwise placeholder
-  service_url  = var.aks_ingress_ip != "" ? "http://${var.aks_ingress_ip}" : "http://placeholder.local"
+  service_url  = var.aks_ingress_ip != "" ? "http://${var.aks_ingress_ip}/api/b" : "http://placeholder.local/api/b"
 }
 
 resource "azurerm_api_management_api_operation" "backend_b_post" {
