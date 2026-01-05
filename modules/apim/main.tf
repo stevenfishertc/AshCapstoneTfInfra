@@ -56,9 +56,21 @@ resource "azurerm_api_management_api" "backend_a" {
   display_name = "Backend A API"
   path         = "api/a"
   protocols    = ["https"]
+  subscription_required = false
 
   # Use AKS ingress LoadBalancer IP if provided, otherwise placeholder
   service_url  = var.aks_ingress_ip != "" ? "http://${var.aks_ingress_ip}" : "http://placeholder.local"
+}
+
+resource "azurerm_api_management_api_operation" "backend_a_post" {
+  operation_id        = "backend-a-post"
+  api_name           = azurerm_api_management_api.backend_a.name
+  api_management_name = azurerm_api_management.apim.name
+  resource_group_name = var.resource_group_name
+  display_name       = "POST to Backend A"
+  method             = "POST"
+  url_template       = "/"
+  description        = "Forward POST requests to backend A"
 }
 
 resource "azurerm_api_management_api" "backend_b" {
@@ -70,9 +82,21 @@ resource "azurerm_api_management_api" "backend_b" {
   display_name = "Backend B API"
   path         = "api/b"
   protocols    = ["https"]
+  subscription_required = false
 
   # Use AKS ingress LoadBalancer IP if provided, otherwise placeholder
   service_url  = var.aks_ingress_ip != "" ? "http://${var.aks_ingress_ip}" : "http://placeholder.local"
+}
+
+resource "azurerm_api_management_api_operation" "backend_b_post" {
+  operation_id        = "backend-b-post"
+  api_name           = azurerm_api_management_api.backend_b.name
+  api_management_name = azurerm_api_management.apim.name
+  resource_group_name = var.resource_group_name
+  display_name       = "POST to Backend B"
+  method             = "POST"
+  url_template       = "/"
+  description        = "Forward POST requests to backend B"
 }
 
 resource "azurerm_private_dns_zone" "apim" {
