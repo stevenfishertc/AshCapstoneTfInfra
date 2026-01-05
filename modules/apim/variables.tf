@@ -11,6 +11,12 @@ variable "virtual_network_type" { type = string } # Internal or External
 variable "vnet_id" { type = string }
 variable "subnet_id" { type = string }
 
+variable "aks_ingress_ip" {
+  description = "The LoadBalancer IP of the AKS ingress controller"
+  type        = string
+  default     = ""
+}
+
 variable "tags" { type = map(string) }
 
 variable "subnet_ready_dependency" { type = any }

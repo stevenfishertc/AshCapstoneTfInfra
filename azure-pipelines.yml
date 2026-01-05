@@ -9,11 +9,7 @@ pr:
       - main
 
 variables:
-  AZURE_SUBSCRIPTION: 'stevens-capstone-conn'   # Service connection name
-
-  PROD_SERVICE_CONN: 'stevens-capstone-prod-conn'    # Service connection name for PROD
-  QA_SERVICE_CONN: 'stevens-capstone-qa-conn'       # Service connection name for QA
-  DEV_SERVICE_CONN: 'stevens-capstone-dev-conn'      # Service connection name for DEV
+  AZURE_SUBSCRIPTION: 'stevens-capstone-conn'
 
   DEV_RESOURCE_GROUP:  steven-rg-capstone-dev
   QA_RESOURCE_GROUP:   steven-rg-capstone-qa
@@ -26,15 +22,6 @@ variables:
   DEV_API_URL:  https://apim-capstone-dev-a1b2c.privatelink.azure-api.net
   QA_API_URL:   https://apim-capstone-qa-a1b2c.privatelink.azure-api.net
   PROD_API_URL: https://apim-capstone-prod-a1b2c.privatelink.azure-api.net
-
-  TENANT_ID: ''                                # To be set in pipeline
-
-  # ----- Container Registry -----
-  DEV_ACR_NAME: acrcapstonedeva1b2c
-  QA_ACR_NAME: acrcapstoneqaa1b2c
-  PROD_ACR_NAME: acrcapstoneproda1b2c
-  ACR_LOGIN_SERVER_SUFFIX: .azurecr.io
-  IMAGE_TAG: $(Build.BuildId)
 
 stages:
 # ---------------------------------------------------
@@ -116,20 +103,6 @@ stages:
                 --resource-group $(DEV_RESOURCE_GROUP) \
                 --settings REACT_APP_API_URL=$(DEV_API_URL)
 
-
-              # az webapp config container set \
-              #   --name stevens-webapp-frontend-dev \
-              #   --resource-group $(DEV_RESOURCE_GROUP) \
-              #   --docker-custom-image-name $(DEV_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)/frontend:$(Build.BuildId) \
-              #   --docker-registry-server-url https://$(DEV_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)
-
-
-              # az webapp restart \
-              #   --name $(DEV_WEBAPP_NAME) \
-              #   --resource-group $(DEV_RESOURCE_GROUP)
-
-
-
 # ---------------------------------------------------
 # 2. QA DEPLOYMENT (Manual Approval Before Running)
 # ---------------------------------------------------
@@ -139,10 +112,9 @@ stages:
   condition: succeeded()
 
   jobs:
-    - deployment: TerraformQA          # <-- deployment job required
+    - deployment: TerraformQA
       displayName: "Terraform Apply (QA)"
       environment: "qa-env"
-      
       strategy:
         runOnce:
           deploy:
@@ -214,18 +186,6 @@ stages:
                       --resource-group $(QA_RESOURCE_GROUP) \
                       --settings REACT_APP_API_URL=$(QA_API_URL)
 
-
-                    # az webapp config container set \
-                    #   --name stevens-webapp-frontend-qa \
-                    #   --resource-group $(QA_RESOURCE_GROUP) \
-                    #   --docker-custom-image-name $(QA_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)/frontend:$(Build.BuildId) \
-                    #   --docker-registry-server-url https://$(QA_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)
-
-
-                    # az webapp restart \
-                    #   --name $(QA_WEBAPP_NAME) \
-                    #   --resource-group $(QA_RESOURCE_GROUP)
-
 # ---------------------------------------------------
 # 2. PROD DEPLOYMENT (Manual Approval Before Running)
 # ---------------------------------------------------
@@ -238,7 +198,6 @@ stages:
     - deployment: TerraformProd
       displayName: "Terraform Apply (Prod)"
       environment: "production-env"
-      
       strategy:
         runOnce:
           deploy:
@@ -309,13 +268,3 @@ stages:
                       --name $(PROD_WEBAPP_NAME) \
                       --resource-group $(PROD_RESOURCE_GROUP) \
                       --settings REACT_APP_API_URL=$(PROD_API_URL)
-
-                    # az webapp config container set \
-                    #   --name stevens-webapp-frontend-prod \
-                    #   --resource-group $(PROD_RESOURCE_GROUP) \
-                    #   --docker-custom-image-name $(PROD_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)/frontend:$(Build.BuildId) \
-                    #   --docker-registry-server-url https://$(PROD_ACR_NAME)$(ACR_LOGIN_SERVER_SUFFIX)
-
-                    # az webapp restart \
-                    #   --name $(PROD_WEBAPP_NAME) \
-                    #   --resource-group $(PROD_RESOURCE_GROUP)

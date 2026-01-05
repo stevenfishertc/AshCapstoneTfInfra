@@ -1,8 +1,6 @@
 project  = "capstone"
 env      = "dev"
 location = "eastus2"
-
-# tenant_id_      = "104e77d4-81e7-4c16-ab44-935220bed6dd"
 unique_suffix  = "a1b2c"
 
 tags = {
@@ -11,13 +9,10 @@ tags = {
 
 vnet_cidr        = "10.10.0.0/16"
 subnet_aks_cidr  = "10.10.1.0/24"
-subnet_pe_cidr   = "10.10.2.0/24"
 subnet_apim_cidr = "10.10.3.0/24"
-subnet_pg_cidr   = "10.10.4.0/24"
 subnet_webapp_cidr = "10.10.5.0/24"
 
 acr_sku = "Premium"
-acr_private_endpoint_enabled = true
 
 pg_admin_user     = "stevushka"
 pg_admin_password = "4285Vion"

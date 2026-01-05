@@ -57,7 +57,8 @@ resource "azurerm_api_management_api" "backend_a" {
   path         = "api/a"
   protocols    = ["https"]
 
-  service_url  = "http://backend-a.${var.environment}.capstone.com"
+  # Use AKS ingress LoadBalancer IP if provided, otherwise placeholder
+  service_url  = var.aks_ingress_ip != "" ? "http://${var.aks_ingress_ip}" : "http://placeholder.local"
 }
 
 resource "azurerm_api_management_api" "backend_b" {
@@ -70,7 +71,8 @@ resource "azurerm_api_management_api" "backend_b" {
   path         = "api/b"
   protocols    = ["https"]
 
-  service_url  = "http://backend-b.${var.environment}.capstone.com"
+  # Use AKS ingress LoadBalancer IP if provided, otherwise placeholder
+  service_url  = var.aks_ingress_ip != "" ? "http://${var.aks_ingress_ip}" : "http://placeholder.local"
 }
 
 resource "azurerm_private_dns_zone" "apim" {
