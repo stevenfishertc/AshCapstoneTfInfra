@@ -33,17 +33,11 @@ variable "tags" {
 # Networking
 variable "vnet_cidr"        { type = string }
 variable "subnet_aks_cidr"  { type = string }
-variable "subnet_pe_cidr"   { type = string }
 variable "subnet_apim_cidr" { type = string }
-variable "subnet_pg_cidr"   { type = string }
 variable "subnet_webapp_cidr" { type = string }
 
 # ACR
 variable "acr_sku" { type = string } # Basic/Standard/Premium
-variable "acr_private_endpoint_enabled" { 
-  type = bool 
-  default = false 
-}
 
 # Postgres
 variable "pg_admin_user"     { type = string }
