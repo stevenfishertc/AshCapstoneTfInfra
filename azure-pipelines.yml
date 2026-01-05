@@ -19,9 +19,9 @@ variables:
   QA_WEBAPP_NAME: stevens-webapp-frontend-qa
   PROD_WEBAPP_NAME: stevens-webapp-frontend-prod
 
-  DEV_API_URL:  https://apim-capstone-dev-a1b2c.privatelink.azure-api.net
-  QA_API_URL:   https://apim-capstone-qa-a1b2c.privatelink.azure-api.net
-  PROD_API_URL: https://apim-capstone-prod-a1b2c.privatelink.azure-api.net
+  DEV_API_URL:  https://apim-capstone-dev-a1b2c.azure-api.net
+  QA_API_URL:   https://apim-capstone-qa-a1b2c.azure-api.net
+  PROD_API_URL: https://apim-capstone-prod-a1b2c.azure-api.net
 
 stages:
 # ---------------------------------------------------
