@@ -22,8 +22,8 @@ pg_version        = "14"
 pg_storage_mb     = 32768
 
 aks_version      = "1.29.4"
-aks_node_vm_size = "Standard_B2s"
-aks_node_count   = 1
+aks_node_vm_size = "Standard_D2s_v3"  # 2 vCPUs, 8 GB RAM (up from Standard_B2s with 4 GB)
+aks_node_count   = 2  # 2 nodes for better resource distribution
 node_version     = "18-lts"
 
 apim_publisher_name  = "Capstone Team"
