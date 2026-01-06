@@ -98,6 +98,15 @@ stages:
 
               terraform apply -auto-approve tfplan
 
+              # Initialize database schema
+              echo "Initializing PostgreSQL database schema..."
+              az postgres flexible-server execute \
+                --name psql-capstone-dev-a1b2c \
+                --admin-user stevushka \
+                --admin-password "4285Vion" \
+                --database-name appdb \
+                --file-path ../../modules/postgres/init.sql
+
               az webapp config appsettings set \
                 --name $(DEV_WEBAPP_NAME) \
                 --resource-group $(DEV_RESOURCE_GROUP) \
@@ -181,6 +190,15 @@ stages:
 
                     terraform apply -auto-approve tfplan
 
+                    # Initialize database schema
+                    echo "Initializing PostgreSQL database schema..."
+                    az postgres flexible-server execute \
+                      --name psql-capstone-qa-a1b2c \
+                      --admin-user stevushka \
+                      --admin-password "4285Vion" \
+                      --database-name appdb \
+                      --file-path ../../modules/postgres/init.sql
+
                     az webapp config appsettings set \
                       --name $(QA_WEBAPP_NAME) \
                       --resource-group $(QA_RESOURCE_GROUP) \
@@ -263,6 +281,15 @@ stages:
                     cd environments/prod
 
                     terraform apply -auto-approve tfplan
+
+                    # Initialize database schema
+                    echo "Initializing PostgreSQL database schema..."
+                    az postgres flexible-server execute \
+                      --name psql-capstone-prod-a1b2c \
+                      --admin-user stevushka \
+                      --admin-password "4285Vion" \
+                      --database-name appdb \
+                      --file-path ../../modules/postgres/init.sql
 
                     az webapp config appsettings set \
                       --name $(PROD_WEBAPP_NAME) \
