@@ -35,3 +35,10 @@ resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_azure_service
   start_ip_address = "0.0.0.0"
   end_ip_address   = "0.0.0.0"
 }
+
+# Disable SSL enforcement for development
+resource "azurerm_postgresql_flexible_server_configuration" "require_secure_transport" {
+  name      = "require_secure_transport"
+  server_id = azurerm_postgresql_flexible_server.pg.id
+  value     = "off"
+}
