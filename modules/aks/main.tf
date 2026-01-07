@@ -18,6 +18,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     node_count             = var.node_count
     vnet_subnet_id         = var.subnet_id
     type                   = "VirtualMachineScaleSets"
+    temporary_name_for_rotation = "steventmp"
   }
 
   network_profile {
